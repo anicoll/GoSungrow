@@ -1,20 +1,22 @@
 package getSendReportConfigCron
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
 	"encoding/json"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/api"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-const Url = "/v1/reportService/getSendReportConfigCron"
-const Disabled = false
-const EndPointName = "AppService.getSendReportConfigCron"
+const (
+	Url          = "/v1/reportService/getSendReportConfigCron"
+	Disabled     = false
+	EndPointName = "AppService.getSendReportConfigCron"
+)
 
-type RequestData struct {
-}
+type RequestData struct{}
 
 func (rd RequestData) IsValid() error {
 	return GoStruct.VerifyOptionsRequired(rd)
@@ -24,7 +26,6 @@ func (rd RequestData) Help() string {
 	ret := fmt.Sprintf("")
 	return ret
 }
-
 
 type ResultData struct {
 	Schedule Schedule `json:"schedule"`
@@ -133,7 +134,7 @@ func (e *ResultData) IsValid() error {
 func (e *ResultData) UnmarshalJSON(data []byte) error {
 	var err error
 
-	for range Only.Once {
+	for range only.Once {
 		if len(data) == 0 {
 			break
 		}

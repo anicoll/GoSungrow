@@ -1,18 +1,20 @@
 package getPowerPictureList
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/api"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct"
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-const Url = "/v1/powerStationService/getPowerPictureList"
-const Disabled = false
-const EndPointName = "AppService.getPowerPictureList"
+const (
+	Url          = "/v1/powerStationService/getPowerPictureList"
+	Disabled     = false
+	EndPointName = "AppService.getPowerPictureList"
+)
 
-type RequestData struct {
-}
+type RequestData struct{}
 
 func (rd RequestData) IsValid() error {
 	return GoStruct.VerifyOptionsRequired(rd)
@@ -23,8 +25,7 @@ func (rd RequestData) Help() string {
 	return ret
 }
 
-type ResultData []struct {
-}
+type ResultData []struct{}
 
 func (e *ResultData) IsValid() error {
 	var err error
@@ -40,7 +41,7 @@ func (e *ResultData) IsValid() error {
 func (e *EndPoint) GetData() api.DataMap {
 	entries := api.NewDataMap()
 
-	for range Only.Once {
+	for range only.Once {
 		entries.StructToDataMap(*e, "", GoStruct.EndPointPath{})
 	}
 

@@ -1,21 +1,24 @@
 package queryPowerStationInfo
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/Common"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/Common"
+	"github.com/anicoll/gosungrow/iSolarCloud/api"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-const Url = "/v1/powerStationService/queryPowerStationInfo"
-const Disabled = false
-const EndPointName = "AppService.queryPowerStationInfo"
+const (
+	Url          = "/v1/powerStationService/queryPowerStationInfo"
+	Disabled     = false
+	EndPointName = "AppService.queryPowerStationInfo"
+)
 
 type RequestData struct {
-	PsId valueTypes.PsId `json:"ps_id"`
-	Sn   valueTypes.String  `json:"sn"`
+	PsId valueTypes.PsId   `json:"ps_id"`
+	Sn   valueTypes.String `json:"sn"`
 }
 
 func (rd RequestData) IsValid() error {
@@ -149,7 +152,7 @@ func (e *ResultData) IsValid() error {
 func (e *EndPoint) GetData() api.DataMap {
 	entries := api.NewDataMap()
 
-	for range Only.Once {
+	for range only.Once {
 		// pkg := reflection.GetName("", *e)
 		// dt := valueTypes.NewDateTime(valueTypes.Now)
 		// name := pkg + "." + e.Request.PsId.String() + "." + e.Response.ResultData.PsKey.String()

@@ -1,17 +1,19 @@
 package NullEndpoint
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct"
-
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/api"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-
-const Url = "%URL%"
-const Disabled = false
-const EndPointName = "NullArea.NullEndpoint"
+const (
+	Url          = "%URL%"
+	Disabled     = false
+	EndPointName = "NullArea.NullEndpoint"
+)
 
 type RequestData struct {
 	// DeviceType valueTypes.Integer `json:"device_type" required:"true"`
@@ -42,7 +44,7 @@ func (e *ResultData) IsValid() error {
 func (e *EndPoint) GetData() api.DataMap {
 	entries := api.NewDataMap()
 
-	for range Only.Once {
+	for range only.Once {
 		entries.StructToDataMap(*e, "", GoStruct.EndPointPath{})
 	}
 

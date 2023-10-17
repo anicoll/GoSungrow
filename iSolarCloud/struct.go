@@ -1,36 +1,36 @@
 package iSolarCloud
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/AliSmsService"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getUserList"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/login"
-	"github.com/MickMake/GoSungrow/iSolarCloud/MttvScreenService"
-	"github.com/MickMake/GoSungrow/iSolarCloud/NullArea"
-	"github.com/MickMake/GoSungrow/iSolarCloud/PowerPointService"
-	"github.com/MickMake/GoSungrow/iSolarCloud/WebAppService"
-	"github.com/MickMake/GoSungrow/iSolarCloud/WebIscmAppService"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/output"
 	"errors"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
 	"os"
 	"strings"
 	"time"
-)
 
+	"github.com/anicoll/gosungrow/iSolarCloud/AliSmsService"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getUserList"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/login"
+	"github.com/anicoll/gosungrow/iSolarCloud/MttvScreenService"
+	"github.com/anicoll/gosungrow/iSolarCloud/NullArea"
+	"github.com/anicoll/gosungrow/iSolarCloud/PowerPointService"
+	"github.com/anicoll/gosungrow/iSolarCloud/WebAppService"
+	"github.com/anicoll/gosungrow/iSolarCloud/WebIscmAppService"
+	"github.com/anicoll/gosungrow/iSolarCloud/api"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/output"
+	"github.com/anicoll/gosungrow/pkg/only"
+)
 
 const (
 	DefaultCacheTimeout = time.Minute * 5
 )
 
 type SunGrow struct {
-	ApiRoot    api.Web
-	Auth       login.EndPoint
-	Areas      api.Areas
-	Error      error
-	NeedLogin  bool
+	ApiRoot     api.Web
+	Auth        login.EndPoint
+	Areas       api.Areas
+	Error       error
+	NeedLogin   bool
 	AuthDetails *login.SunGrowAuth
 
 	Directory  string
@@ -41,7 +41,7 @@ type SunGrow struct {
 func NewSunGro(baseUrl string, cacheDir string) *SunGrow {
 	var p SunGrow
 
-	for range Only.Once {
+	for range only.Once {
 		p.Error = p.ApiRoot.SetUrl(baseUrl)
 		if p.Error != nil {
 			break
@@ -56,7 +56,7 @@ func NewSunGro(baseUrl string, cacheDir string) *SunGrow {
 }
 
 func (sg *SunGrow) Init() error {
-	for range Only.Once {
+	for range only.Once {
 		sg.Areas = make(api.Areas)
 
 		sg.Areas[api.GetArea(NullArea.Area{})] = api.AreaStruct(NullArea.Init(sg.ApiRoot))
@@ -92,7 +92,7 @@ func (sg *SunGrow) AppendUrl(endpoint string) api.EndPointUrl {
 func (sg *SunGrow) GetEndpoint(ae string) api.EndPoint {
 	var ep api.EndPoint
 
-	for range Only.Once {
+	for range only.Once {
 		area, endpoint := sg.SplitEndPoint(ae)
 		if sg.IsError() {
 			break
@@ -121,7 +121,7 @@ func (sg *SunGrow) GetEndpoint(ae string) api.EndPoint {
 
 func (sg *SunGrow) GetByJson(endpoint string, request string) api.EndPoint {
 	var ret api.EndPoint
-	for range Only.Once {
+	for range only.Once {
 		if sg.NeedLogin {
 			sg.Error = errors.New("currently logged out")
 			break
@@ -148,39 +148,39 @@ func (sg *SunGrow) GetByJson(endpoint string, request string) api.EndPoint {
 		}
 
 		switch {
-			case sg.OutputType.IsNone():
-				if sg.IsError() {
-					fmt.Println(ret.Help())
-					break
-				}
+		case sg.OutputType.IsNone():
+			if sg.IsError() {
+				fmt.Println(ret.Help())
+				break
+			}
 
-			case sg.OutputType.IsRaw():
-				// if sg.Error != nil {
-				// 	fmt.Println(ret.Help())
-				// 	break
-				// }
-				if sg.SaveAsFile {
-					sg.Error = ret.WriteDataFile()
-					break
-				}
-				fmt.Println(ret.GetJsonData(true))
+		case sg.OutputType.IsRaw():
+			// if sg.Error != nil {
+			// 	fmt.Println(ret.Help())
+			// 	break
+			// }
+			if sg.SaveAsFile {
+				sg.Error = ret.WriteDataFile()
+				break
+			}
+			fmt.Println(ret.GetJsonData(true))
 
-			case sg.OutputType.IsJson():
-				if sg.IsError() {
-					fmt.Println(ret.Help())
-					break
-				}
-				if sg.SaveAsFile {
-					sg.Error = ret.WriteDataFile()
-					break
-				}
-				fmt.Println(ret.GetJsonData(false))
+		case sg.OutputType.IsJson():
+			if sg.IsError() {
+				fmt.Println(ret.Help())
+				break
+			}
+			if sg.SaveAsFile {
+				sg.Error = ret.WriteDataFile()
+				break
+			}
+			fmt.Println(ret.GetJsonData(false))
 
-			default:
-				if sg.IsError() {
-					fmt.Println(ret.Help())
-					break
-				}
+		default:
+			if sg.IsError() {
+				fmt.Println(ret.Help())
+				break
+			}
 		}
 	}
 	return ret
@@ -188,7 +188,7 @@ func (sg *SunGrow) GetByJson(endpoint string, request string) api.EndPoint {
 
 func (sg *SunGrow) GetByStruct(endpoint string, request interface{}, cache time.Duration) api.EndPoint {
 	var ret api.EndPoint
-	for range Only.Once {
+	for range only.Once {
 		if sg.NeedLogin {
 			sg.Error = errors.New("currently logged out")
 			break
@@ -229,7 +229,7 @@ func (sg *SunGrow) GetByStruct(endpoint string, request interface{}, cache time.
 
 func (sg *SunGrow) RequestRequiresArgs(ae string) bool {
 	var yes bool
-	for range Only.Once {
+	for range only.Once {
 		area, endpoint := sg.SplitEndPoint(ae)
 		if sg.IsError() {
 			break
@@ -243,7 +243,7 @@ func (sg *SunGrow) RequestRequiresArgs(ae string) bool {
 
 func (sg *SunGrow) RequestArgs(ae string) map[string]string {
 	var ret map[string]string
-	for range Only.Once {
+	for range only.Once {
 		area, endpoint := sg.SplitEndPoint(ae)
 		if sg.IsError() {
 			break
@@ -259,22 +259,22 @@ func (sg *SunGrow) SplitEndPoint(ae string) (api.AreaName, api.EndPointName) {
 	var area api.AreaName
 	var endpoint api.EndPointName
 
-	for range Only.Once {
+	for range only.Once {
 		s := strings.Split(ae, ".")
 		switch len(s) {
-			case 0:
-				sg.Error = errors.New("empty endpoint")
+		case 0:
+			sg.Error = errors.New("empty endpoint")
 
-			case 1:
-				area = "AppService"
-				endpoint = api.EndPointName(s[0])
+		case 1:
+			area = "AppService"
+			endpoint = api.EndPointName(s[0])
 
-			case 2:
-				area = api.AreaName(s[0])
-				endpoint = api.EndPointName(s[1])
+		case 2:
+			area = api.AreaName(s[0])
+			endpoint = api.EndPointName(s[1])
 
-			default:
-				sg.Error = errors.New("too many delimiters defined, (only one '.' allowed)")
+		default:
+			sg.Error = errors.New("too many delimiters defined, (only one '.' allowed)")
 		}
 	}
 
@@ -298,7 +298,7 @@ func (sg *SunGrow) AreaNotExists(area string) bool {
 }
 
 func (sg *SunGrow) login() error {
-	for range Only.Once {
+	for range only.Once {
 		if sg.AuthDetails == nil {
 			break
 		}
@@ -317,12 +317,12 @@ func (sg *SunGrow) login() error {
 }
 
 func (sg *SunGrow) Login(auth login.SunGrowAuth) error {
-	for range Only.Once {
+	for range only.Once {
 		sg.AuthDetails = &auth
 
 		// Fetch a simple request.
-		for range Only.Twice {
-			sg.Error = nil	// Needed for looping twice.
+		for range only.Twice {
+			sg.Error = nil // Needed for looping twice.
 			sg.Error = sg.login()
 			if sg.Error == nil {
 				// - DO NOT BREAK
@@ -339,7 +339,7 @@ func (sg *SunGrow) Login(auth login.SunGrowAuth) error {
 				break
 			}
 
-			_, _ = fmt.Fprintf(os.Stderr,"Logging in again\n")
+			_, _ = fmt.Fprintf(os.Stderr, "Logging in again\n")
 			// fmt.Printf("DEBUG: AppService.getUserList - error - %s\n", sg.Error)
 		}
 
@@ -356,7 +356,7 @@ func (sg *SunGrow) Login(auth login.SunGrowAuth) error {
 }
 
 func (sg *SunGrow) IsLoggedOut() bool {
-	for range Only.Once {
+	for range only.Once {
 		if sg.IsNotError() {
 			sg.NeedLogin = false
 			break
@@ -371,7 +371,7 @@ func (sg *SunGrow) IsLoggedOut() bool {
 }
 
 func (sg *SunGrow) Logout() {
-	for range Only.Once {
+	for range only.Once {
 		_ = sg.ApiRoot.WebCacheRemove(sg.Auth)
 		_ = sg.Auth.RemoveToken()
 		// _ = sg.Auth.ApiRemoveDataFile()

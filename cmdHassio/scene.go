@@ -2,16 +2,15 @@ package cmdHassio
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
 const LabelScene = "scene"
 
-
 func (m *Mqtt) ScenePublishConfig(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsScene() {
 			break
 		}
@@ -23,9 +22,9 @@ func (m *Mqtt) ScenePublishConfig(config EntityConfig) error {
 
 		id := JoinStringsForId(m.DeviceName, config.FullId)
 
-		payload := Scene {
+		payload := Scene{
 			// Device:       newDevice,
-			Name:         String(JoinStrings(m.DeviceName, config.Name)),
+			Name: String(JoinStrings(m.DeviceName, config.Name)),
 			// StateTopic:   JoinStringsForTopic(m.switchPrefix, id, "state"),
 			CommandTopic: String(JoinStringsForTopic(m.Prefix, LabelScene, m.ClientId, id, "cmd")),
 			ObjectId:     String(id),
@@ -38,7 +37,7 @@ func (m *Mqtt) ScenePublishConfig(config EntityConfig) error {
 			// StateOn:       "true",
 			// StateOff:      "false",
 			// ValueTemplate: config.ValueTemplate,
-			Icon:          Icon(config.Icon),
+			Icon: Icon(config.Icon),
 		}
 
 		tag := JoinStringsForTopic(m.Prefix, LabelScene, m.ClientId, id, "config")
@@ -49,8 +48,7 @@ func (m *Mqtt) ScenePublishConfig(config EntityConfig) error {
 }
 
 func (m *Mqtt) ScenePublishValue(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsScene() {
 			break
 		}
@@ -73,7 +71,7 @@ func (m *Mqtt) ScenePublishValue(config EntityConfig) error {
 			break
 		}
 
-		payload := MqttState {
+		payload := MqttState{
 			LastReset: config.LastReset, // m.GetLastReset(config.FullId),
 			Value:     value,
 		}
@@ -133,7 +131,6 @@ type Scene struct {
 	UniqueId String `json:"unique_id,omitempty"`
 }
 
-
 func (c *Scene) Json() string {
 	j, _ := json.Marshal(*c)
 	return string(j)
@@ -142,7 +139,7 @@ func (c *Scene) Json() string {
 func (config *EntityConfig) IsScene() bool {
 	var ok bool
 
-	for range Only.Once {
+	for range only.Once {
 		if config.Units == LabelScene {
 			ok = true
 			break

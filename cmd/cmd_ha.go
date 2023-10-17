@@ -1,16 +1,16 @@
 package cmd
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/output"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
-	"github.com/MickMake/GoUnify/cmdHelp"
-	"github.com/MickMake/GoUnify/cmdPath"
-	"github.com/spf13/cobra"
 	"strings"
-)
+	"sync"
 
+	"github.com/anicoll/gosungrow/iSolarCloud"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/output"
+	"github.com/anicoll/gosungrow/pkg/cmdhelp"
+	"github.com/anicoll/gosungrow/pkg/cmdpath"
+	"github.com/spf13/cobra"
+)
 
 //goland:noinspection GoNameStartsWithPackageName
 type CmdHa CmdDefault
@@ -18,21 +18,23 @@ type CmdHa CmdDefault
 func NewCmdHa() *CmdHa {
 	var ret *CmdHa
 
-	for range Only.Once {
+	var once sync.Once
+	once.Do(func() {
 		ret = &CmdHa{
 			Error:   nil,
 			cmd:     nil,
 			SelfCmd: nil,
 		}
-	}
+	})
 
 	return ret
 }
 
 func (c *CmdHa) AttachCommand(cmd *cobra.Command) *cobra.Command {
-	for range Only.Once {
+	var once sync.Once
+	once.Do(func() {
 		if cmd == nil {
-			break
+			return
 		}
 		c.cmd = cmd
 
@@ -46,16 +48,16 @@ func (c *CmdHa) AttachCommand(cmd *cobra.Command) *cobra.Command {
 			DisableFlagParsing:    false,
 			DisableFlagsInUseLine: false,
 			PreRunE:               cmds.SunGrowArgs,
-			RunE:                  func(cmd *cobra.Command, args []string) error {
+			RunE: func(cmd *cobra.Command, args []string) error {
 				return cmd.Help()
 			},
 			Args: cobra.MinimumNArgs(1),
 		}
 		cmd.AddCommand(c.SelfCmd)
-		c.SelfCmd.Example = cmdHelp.PrintExamples(c.SelfCmd, "")
+		c.SelfCmd.Example = cmdhelp.PrintExamples(c.SelfCmd, "")
 
 		// ********************************************************************************
-		var cmdHaGet = &cobra.Command{
+		cmdHaGet := &cobra.Command{
 			Use:                   "lovelace",
 			Aliases:               []string{output.StringTypeTable},
 			Annotations:           map[string]string{"group": "Ha"},
@@ -65,28 +67,28 @@ func (c *CmdHa) AttachCommand(cmd *cobra.Command) *cobra.Command {
 			DisableFlagsInUseLine: false,
 			PreRunE:               cmds.SunGrowArgs,
 			RunE:                  c.CmdLovelace,
-			Args: cobra.MinimumNArgs(0),
+			Args:                  cobra.MinimumNArgs(0),
 		}
 		c.SelfCmd.AddCommand(cmdHaGet)
-		cmdHaGet.Example = cmdHelp.PrintExamples(cmdHaGet, "[area.]<endpoint>")
-	}
+		cmdHaGet.Example = cmdhelp.PrintExamples(cmdHaGet, "[area.]<endpoint>")
+	})
 	return c.SelfCmd
 }
 
-
 func (c *CmdHa) CmdLovelace(cmd *cobra.Command, args []string) error {
-	for range Only.Once {
+	var once sync.Once
+	once.Do(func() {
 		pids := cmds.Api.SunGrow.SetPsIds(args...)
 		if cmds.Api.SunGrow.Error != nil {
 			c.Error = cmds.Api.SunGrow.Error
-			break
+			return
 		}
 
 		for _, pid := range pids {
 			var trees iSolarCloud.PsTrees
 			trees, c.Error = cmds.Api.SunGrow.PsTreeMenu(pid.String())
 			if c.Error != nil {
-				break
+				return
 			}
 
 			var DeviceType14 string
@@ -130,9 +132,9 @@ func (c *CmdHa) CmdLovelace(cmd *cobra.Command, args []string) error {
 			data = strings.ReplaceAll(data, "{{ DeviceType:14 }}", DeviceType14)
 			data = strings.ReplaceAll(data, "{{ DeviceType:22 }}", DeviceType22)
 			data = strings.ReplaceAll(data, "{{ DeviceType:43 }}", DeviceType43)
-			c.Error = cmdPath.PlainFileWrite(fmt.Sprintf("Lovelace-Basic-%s.yaml", pid.String()), []byte(data), 0644)
+			c.Error = cmdpath.PlainFileWrite(fmt.Sprintf("Lovelace-Basic-%s.yaml", pid.String()), []byte(data), 0o644)
 			if c.Error != nil {
-				break
+				return
 			}
 
 			data = lovelaceGraphs
@@ -140,9 +142,9 @@ func (c *CmdHa) CmdLovelace(cmd *cobra.Command, args []string) error {
 			data = strings.ReplaceAll(data, "{{ DeviceType:14 }}", DeviceType14)
 			data = strings.ReplaceAll(data, "{{ DeviceType:22 }}", DeviceType22)
 			data = strings.ReplaceAll(data, "{{ DeviceType:43 }}", DeviceType43)
-			c.Error = cmdPath.PlainFileWrite(fmt.Sprintf("Lovelace-Graphs-%s.yaml", pid.String()), []byte(data), 0644)
+			c.Error = cmdpath.PlainFileWrite(fmt.Sprintf("Lovelace-Graphs-%s.yaml", pid.String()), []byte(data), 0o644)
 			if c.Error != nil {
-				break
+				return
 			}
 
 			data = lovelaceStats
@@ -150,9 +152,9 @@ func (c *CmdHa) CmdLovelace(cmd *cobra.Command, args []string) error {
 			data = strings.ReplaceAll(data, "{{ DeviceType:14 }}", DeviceType14)
 			data = strings.ReplaceAll(data, "{{ DeviceType:22 }}", DeviceType22)
 			data = strings.ReplaceAll(data, "{{ DeviceType:43 }}", DeviceType43)
-			c.Error = cmdPath.PlainFileWrite(fmt.Sprintf("Lovelace-Stats-%s.yaml", pid.String()), []byte(data), 0644)
+			c.Error = cmdpath.PlainFileWrite(fmt.Sprintf("Lovelace-Stats-%s.yaml", pid.String()), []byte(data), 0o644)
 			if c.Error != nil {
-				break
+				return
 			}
 		}
 
@@ -161,12 +163,10 @@ func (c *CmdHa) CmdLovelace(cmd *cobra.Command, args []string) error {
 		// 	case "graphs":
 		// 	case "stats":
 		// }
-
-	}
+	})
 
 	return c.Error
 }
-
 
 const lovelaceBasic = `views:
   - theme: Backend-selected

@@ -2,25 +2,26 @@ package valueTypes
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-
-var VarTrue = true
-var VarFalse = false
+var (
+	VarTrue  = true
+	VarFalse = false
+)
 
 type Bool struct {
 	string `json:"string,omitempty"`
 	bool   `json:"bool,omitempty"`
-	Valid   bool `json:"valid"`
-	Error   error `json:"-"`
+	Valid  bool  `json:"valid"`
+	Error  error `json:"-"`
 }
 
 // UnmarshalJSON - Convert JSON to value
 func (t *Bool) UnmarshalJSON(data []byte) error {
-
-	for range Only.Once {
+	for range only.Once {
 		t.Valid = false
 
 		if len(data) == 0 {
@@ -61,7 +62,7 @@ func (t *Bool) UnmarshalJSON(data []byte) error {
 func (t Bool) MarshalJSON() ([]byte, error) {
 	var data []byte
 
-	for range Only.Once {
+	for range only.Once {
 		t.Valid = false
 
 		data, t.Error = json.Marshal(t.bool)
@@ -91,36 +92,36 @@ func (t Bool) String() string {
 }
 
 func (t *Bool) SetString(value string) Bool {
-	for range Only.Once {
+	for range only.Once {
 		t.string = value
 		t.Valid = false
 
 		switch strings.ToLower(t.string) {
-			case "false":
-				fallthrough
-			case "no":
-				fallthrough
-			case "off":
-				fallthrough
-			case "0":
-				fallthrough
-			case "":
-				// 	fallthrough
-				// case "--":
-				t.bool = false
-				t.string = "false"
-				t.Valid = true
+		case "false":
+			fallthrough
+		case "no":
+			fallthrough
+		case "off":
+			fallthrough
+		case "0":
+			fallthrough
+		case "":
+			// 	fallthrough
+			// case "--":
+			t.bool = false
+			t.string = "false"
+			t.Valid = true
 
-			case "true":
-				fallthrough
-			case "yes":
-				fallthrough
-			case "on":
-				fallthrough
-			case "1":
-				t.bool = true
-				t.string = "true"
-				t.Valid = true
+		case "true":
+			fallthrough
+		case "yes":
+			fallthrough
+		case "on":
+			fallthrough
+		case "1":
+			t.bool = true
+			t.string = "true"
+			t.Valid = true
 		}
 	}
 
@@ -128,7 +129,7 @@ func (t *Bool) SetString(value string) Bool {
 }
 
 func (t *Bool) SetValue(value bool) Bool {
-	for range Only.Once {
+	for range only.Once {
 		t.bool = value
 		t.Valid = true
 
@@ -144,7 +145,7 @@ func (t *Bool) SetValue(value bool) Bool {
 }
 
 func (t *Bool) SetInteger(value int64) Bool {
-	for range Only.Once {
+	for range only.Once {
 		t.Valid = true
 
 		if value == 0 {

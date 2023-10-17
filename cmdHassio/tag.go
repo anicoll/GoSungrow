@@ -2,16 +2,15 @@ package cmdHassio
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
 const LabelTag = "tag"
 
-
 func (m *Mqtt) TagPublishConfig(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsTag() {
 			break
 		}
@@ -23,8 +22,8 @@ func (m *Mqtt) TagPublishConfig(config EntityConfig) error {
 
 		id := JoinStringsForId(m.DeviceName, config.FullId)
 
-		payload := Tag {
-			Device:       newDevice,
+		payload := Tag{
+			Device: newDevice,
 			// Name:         String(JoinStrings(m.DeviceName, config.Name)),
 			// StateTopic:   JoinStringsForTopic(m.switchPrefix, id, "state"),
 			// CommandTopic: String(JoinStringsForTopic(m.switchPrefix, id, "cmd")),
@@ -49,8 +48,7 @@ func (m *Mqtt) TagPublishConfig(config EntityConfig) error {
 }
 
 func (m *Mqtt) TagPublishValue(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsTag() {
 			break
 		}
@@ -73,7 +71,7 @@ func (m *Mqtt) TagPublishValue(config EntityConfig) error {
 			break
 		}
 
-		payload := MqttState {
+		payload := MqttState{
 			LastReset: config.LastReset, // m.GetLastReset(config.FullId),
 			Value:     value,
 		}
@@ -94,7 +92,6 @@ type Tag struct {
 	Device Device `json:"device,omitempty" required:"true"`
 }
 
-
 func (c *Tag) Json() string {
 	j, _ := json.Marshal(*c)
 	return string(j)
@@ -103,7 +100,7 @@ func (c *Tag) Json() string {
 func (config *EntityConfig) IsTag() bool {
 	var ok bool
 
-	for range Only.Once {
+	for range only.Once {
 		if config.Units == LabelTag {
 			ok = true
 			break

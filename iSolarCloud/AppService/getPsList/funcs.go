@@ -1,10 +1,9 @@
 package getPsList
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
-	"github.com/MickMake/GoUnify/Only"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+	"github.com/anicoll/gosungrow/pkg/only"
 )
-
 
 // type Device struct {
 // 	PsId                   valueTypes.PsId
@@ -25,7 +24,7 @@ import (
 
 func (e *ResultData) GetPsIds() []valueTypes.PsId {
 	var ret []valueTypes.PsId
-	for range Only.Once {
+	for range only.Once {
 		i := len(e.PageList)
 		if i == 0 {
 			break
@@ -42,7 +41,7 @@ func (e *ResultData) GetPsIds() []valueTypes.PsId {
 
 func (e *ResultData) GetPsName() []string {
 	var ret []string
-	for range Only.Once {
+	for range only.Once {
 		i := len(e.PageList)
 		if i == 0 {
 			break
@@ -58,7 +57,7 @@ func (e *ResultData) GetPsName() []string {
 
 func (e *ResultData) GetPsSerial() []string {
 	var ret []string
-	for range Only.Once {
+	for range only.Once {
 		i := len(e.PageList)
 		if i == 0 {
 			break

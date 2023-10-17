@@ -2,16 +2,15 @@ package cmdHassio
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
-)
 
+	"github.com/anicoll/gosungrow/pkg/only"
+)
 
 const LabelVacuum = "vacuum"
 
 func (m *Mqtt) VacuumPublishConfig(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsVacuum() {
 			break
 		}
@@ -23,9 +22,9 @@ func (m *Mqtt) VacuumPublishConfig(config EntityConfig) error {
 
 		id := JoinStringsForId(m.DeviceName, config.FullId)
 
-		payload := Vacuum {
-			Device:       newDevice,
-			Name:         String(JoinStrings(m.DeviceName, config.Name)),
+		payload := Vacuum{
+			Device: newDevice,
+			Name:   String(JoinStrings(m.DeviceName, config.Name)),
 			// StateTopic:   JoinStringsForTopic(m.switchPrefix, id, "state"),
 			CommandTopic: String(JoinStringsForTopic(m.Prefix, LabelVacuum, m.ClientId, id, "cmd")),
 			ObjectId:     String(id),
@@ -52,8 +51,7 @@ func (m *Mqtt) VacuumPublishConfig(config EntityConfig) error {
 }
 
 func (m *Mqtt) VacuumPublishValue(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsVacuum() {
 			break
 		}
@@ -181,7 +179,6 @@ type Vacuum struct {
 	UniqueId String `json:"unique_id,omitempty"`
 }
 
-
 func (c *Vacuum) Json() string {
 	j, _ := json.Marshal(*c)
 	return string(j)
@@ -190,7 +187,7 @@ func (c *Vacuum) Json() string {
 func (config *EntityConfig) IsVacuum() bool {
 	var ok bool
 
-	for range Only.Once {
+	for range only.Once {
 		if config.Units == LabelVacuum {
 			ok = true
 			break

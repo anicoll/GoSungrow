@@ -1,27 +1,27 @@
 package iSolarCloud
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPowerStatistics"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPsDetail"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPsDetailWithPsType"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPsHealthState"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPsList"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPsListStaticData"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPsWeatherList"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/powerDevicePointList"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/queryDeviceList"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/queryDeviceListForApp"
-	"github.com/MickMake/GoSungrow/iSolarCloud/WebAppService/showPSView"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
-)
 
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPowerStatistics"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPsDetail"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPsDetailWithPsType"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPsHealthState"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPsList"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPsListStaticData"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPsWeatherList"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/powerDevicePointList"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/queryDeviceList"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/queryDeviceListForApp"
+	"github.com/anicoll/gosungrow/iSolarCloud/WebAppService/showPSView"
+	"github.com/anicoll/gosungrow/iSolarCloud/api"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+	"github.com/anicoll/gosungrow/pkg/only"
+)
 
 func (sg *SunGrow) AllCritical() error {
 	var ep api.EndPoint
-	for range Only.Once {
+	for range only.Once {
 		ep = sg.GetByJson(powerDevicePointList.EndPointName, "")
 		if sg.IsError() {
 			break
@@ -108,7 +108,7 @@ func (sg *SunGrow) AllCritical() error {
 
 // func (sg *SunGrow) PrintCurrentStats() error {
 // 	var ep api.EndPoint
-// 	for range Only.Once {
+// 	for range only.Once {
 // 		ep = sg.GetByStruct(getPsList.EndPointName, nil, DefaultCacheTimeout)
 // 		if sg.IsError() {
 // 			break
@@ -167,7 +167,7 @@ func (sg *SunGrow) AllCritical() error {
 func (sg *SunGrow) GetPsNames() ([]string, error) {
 	var ret []string
 
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPsList.EndPointName, nil, DefaultCacheTimeout)
 		if sg.IsError() {
 			break
@@ -183,7 +183,7 @@ func (sg *SunGrow) GetPsNames() ([]string, error) {
 func (sg *SunGrow) GetPsModels() ([]string, error) {
 	var ret []string
 
-	for range Only.Once {
+	for range only.Once {
 		var psIds valueTypes.PsIds
 		psIds, sg.Error = sg.GetPsIds()
 		if sg.Error != nil {
@@ -210,7 +210,7 @@ func (sg *SunGrow) GetPsModels() ([]string, error) {
 func (sg *SunGrow) GetPsSerials() ([]string, error) {
 	var ret []string
 
-	for range Only.Once {
+	for range only.Once {
 		var psIds valueTypes.PsIds
 		psIds, sg.Error = sg.GetPsIds()
 		if sg.Error != nil {

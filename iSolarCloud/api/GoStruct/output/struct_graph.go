@@ -1,25 +1,26 @@
 package output
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
-	"github.com/wcharczuk/go-chart/v2"
-	"github.com/wcharczuk/go-chart/v2/drawing"
 	"os"
 	"path"
 	"strings"
 	"time"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+	"github.com/anicoll/gosungrow/pkg/only"
+	"github.com/wcharczuk/go-chart/v2"
+	"github.com/wcharczuk/go-chart/v2/drawing"
 )
+
 // 	"go.pennock.tech/tabular"
 // 	tabular "github.com/agrison/go-tablib"
 
-
 type GraphRequest struct {
-	Title        string  `json:"title"`
-	SubTitle     string  `json:"sub_title"`
+	Title    string `json:"title"`
+	SubTitle string `json:"sub_title"`
 
 	TimeColumn  *string  `json:"time_column"`
 	DataColumn  *string  `json:"value_column"`
@@ -34,13 +35,12 @@ type GraphRequest struct {
 	// DataColumn   *string  `json:"data_column"`
 	// SearchString *string  `json:"search_string"`
 
-	Error        error   `json:"-"`
+	Error error `json:"-"`
 }
-
 
 func JsonToGraphRequest(j Json) GraphRequest {
 	var ret GraphRequest
-	for range Only.Once {
+	for range only.Once {
 		if j == "" {
 			break
 		}
@@ -63,7 +63,7 @@ func (t *Table) InitGraph(req GraphRequest) {
 }
 
 func (t *Table) SetGraph(req GraphRequest) error {
-	for range Only.Once {
+	for range only.Once {
 		if t.graph == nil {
 			t.graph = New()
 		}
@@ -108,7 +108,7 @@ func (t *Table) SetGraph(req GraphRequest) error {
 }
 
 func (t *Table) SetGraphFromJson(j Json) error {
-	for range Only.Once {
+	for range only.Once {
 		if j == "" {
 			break
 		}
@@ -132,7 +132,7 @@ func (t *Table) ProcessGraphData() error {
 	t.Error = t.graph.ProcessGraphData(t)
 	return t.Error
 
-	// for range Only.Once {
+	// for range only.Once {
 	// 	req := t.graph.req
 	//
 	// 	t.graph.searchName = ""
@@ -237,7 +237,7 @@ func (t *Table) ProcessGraphData() error {
 }
 
 func (t *Table) CreateGraph() error {
-	for range Only.Once {
+	for range only.Once {
 		t.Error = t.SetGraphFromJson(Json(t.graphFilter))
 		if t.Error != nil {
 			break
@@ -274,7 +274,6 @@ func (t *Table) CreateGraph() error {
 	return t.Error
 }
 
-
 type Chart struct {
 	Error error `json:"-"`
 
@@ -292,15 +291,15 @@ type Chart struct {
 func New() *Chart {
 	var c Chart
 
-	for range Only.Once {
-		c.timeSeries1 = chart.TimeSeries {
+	for range only.Once {
+		c.timeSeries1 = chart.TimeSeries{
 			Name:    "",
 			Style:   chart.Style{},
 			YAxis:   chart.YAxisPrimary,
 			XValues: []time.Time{},
 			YValues: []float64{},
 		}
-		c.timeSeries2 = chart.TimeSeries {
+		c.timeSeries2 = chart.TimeSeries{
 			Name:    "",
 			Style:   chart.Style{},
 			YAxis:   chart.YAxisSecondary,
@@ -308,20 +307,19 @@ func New() *Chart {
 			YValues: []float64{},
 		}
 
-		c.annotation = chart.AnnotationSeries {
-			Annotations: []chart.Value2 {
-			},
+		c.annotation = chart.AnnotationSeries{
+			Annotations: []chart.Value2{},
 		}
 
-		c.graph = chart.Chart {
-			Title:          "",
-			TitleStyle:     chart.Style{},
-			ColorPalette:   nil,
-			Width:          0,
-			Height:         0,
-			DPI:            0,
-			Background: chart.Style {
-				Padding: chart.Box {
+		c.graph = chart.Chart{
+			Title:        "",
+			TitleStyle:   chart.Style{},
+			ColorPalette: nil,
+			Width:        0,
+			Height:       0,
+			DPI:          0,
+			Background: chart.Style{
+				Padding: chart.Box{
 					Top:    50,
 					Left:   25,
 					Right:  25,
@@ -334,7 +332,7 @@ func New() *Chart {
 			YAxis:          chart.YAxis{},
 			YAxisSecondary: chart.YAxis{},
 			Font:           nil,
-			Series:         []chart.Series{},	// c.timeSeries1, c.annotation },	// , c.timeSeries2},
+			Series:         []chart.Series{}, // c.timeSeries1, c.annotation },	// , c.timeSeries2},
 			Elements:       nil,
 			Log:            nil,
 		}
@@ -344,7 +342,7 @@ func New() *Chart {
 }
 
 func (c *Chart) ProcessGraphData(table *Table) error {
-	for range Only.Once {
+	for range only.Once {
 		// req := c.req
 
 		c.searchName = ""
@@ -369,12 +367,10 @@ func (c *Chart) ProcessGraphData(table *Table) error {
 			// 	continue
 			// }
 
-
 			// if req.Title == "" {
 			// 	req.Title = cell.(string)
 			// 	c.SetTitle(cell.(string))
 			// }
-
 
 			// if t.graph.searchName == "" {
 			if c.req.NameColumn != nil {
@@ -403,7 +399,6 @@ func (c *Chart) ProcessGraphData(table *Table) error {
 				// }
 			}
 			// }
-
 
 			// Get units
 			if c.req.DataUnit == nil {
@@ -437,7 +432,6 @@ func (c *Chart) ProcessGraphData(table *Table) error {
 				}
 			}
 
-
 			// cell, t.Error = t.table.CellAt(tabular.CellLocation{Row: row, Column: *req.TimeColumn})
 			cellType, cell, c.Error = table.GetCell(row, *c.req.TimeColumn)
 			if c.Error != nil {
@@ -455,29 +449,29 @@ func (c *Chart) ProcessGraphData(table *Table) error {
 			// }
 			// times = append(times, val.First().IsTypeDateTime())
 			switch cellType {
-				case valueTypes.TypeUnitValue:
-					var tim time.Time
-					tim, c.Error = time.ParseInLocation(DateTimeSearchLayout, cell.(valueTypes.UnitValue).String(), time.Local)	// @TODO - May have to revisit this!
-					if c.Error != nil {
-						continue
-					}
-					times = append(times, tim)
-				case "string":
-					var tim time.Time
-					tim, c.Error = time.ParseInLocation(DateTimeSearchLayout, cell.(string), time.Local)	// @TODO - May have to revisit this!
-					if c.Error != nil {
-						continue
-					}
-					times = append(times, tim)
-				case valueTypes.TypeDateTime:
-					times = append(times, cell.(valueTypes.DateTime).Time)
-				default:
-					var tim time.Time
-					tim, c.Error = time.ParseInLocation(DateTimeSearchLayout, fmt.Sprintf("%s", cell), time.Local)	// @TODO - May have to revisit this!
-					if c.Error != nil {
-						continue
-					}
-					times = append(times, tim)
+			case valueTypes.TypeUnitValue:
+				var tim time.Time
+				tim, c.Error = time.ParseInLocation(DateTimeSearchLayout, cell.(valueTypes.UnitValue).String(), time.Local) // @TODO - May have to revisit this!
+				if c.Error != nil {
+					continue
+				}
+				times = append(times, tim)
+			case "string":
+				var tim time.Time
+				tim, c.Error = time.ParseInLocation(DateTimeSearchLayout, cell.(string), time.Local) // @TODO - May have to revisit this!
+				if c.Error != nil {
+					continue
+				}
+				times = append(times, tim)
+			case valueTypes.TypeDateTime:
+				times = append(times, cell.(valueTypes.DateTime).Time)
+			default:
+				var tim time.Time
+				tim, c.Error = time.ParseInLocation(DateTimeSearchLayout, fmt.Sprintf("%s", cell), time.Local) // @TODO - May have to revisit this!
+				if c.Error != nil {
+					continue
+				}
+				times = append(times, tim)
 			}
 
 			// cell, t.Error = t.table.CellAt(tabular.CellLocation{Row: row, Column: *req.ValueColumn})
@@ -538,38 +532,38 @@ func (c *Chart) ProcessGraphData(table *Table) error {
 			break
 		}
 
-		c.timeSeries1.Style = chart.Style {
+		c.timeSeries1.Style = chart.Style{
 			StrokeColor: drawing.ColorBlue,
 			FillColor:   drawing.ColorBlue.WithAlpha(64),
 		}
 
-		c.minSeries = &chart.MinSeries {
+		c.minSeries = &chart.MinSeries{
 			Name: "Min",
-			Style:  chart.Style {
+			Style: chart.Style{
 				// StrokeColor:     chart.ColorAlternateGray,
 				// StrokeColor:     drawing.ColorBlue,
 				// FillColor:       drawing.ColorBlue.WithAlpha(50),
 				StrokeColor:     drawing.ColorBlue,
 				StrokeDashArray: []float64{5.0, 5.0},
-				DotWidth: 0.5,
+				DotWidth:        0.5,
 			},
 			InnerSeries: c.timeSeries1,
 		}
 
-		c.maxSeries = &chart.MaxSeries {
+		c.maxSeries = &chart.MaxSeries{
 			Name: "Max",
-			Style: chart.Style {
+			Style: chart.Style{
 				// StrokeColor:     chart.ColorAlternateGray,
 				// StrokeColor:     drawing.ColorGreen,
 				// FillColor:       drawing.ColorGreen.WithAlpha(64),
 				StrokeColor:     drawing.ColorBlue,
 				StrokeDashArray: []float64{5.0, 5.0},
-				DotWidth: 1.0,
+				DotWidth:        1.0,
 			},
 			InnerSeries: c.timeSeries1,
 		}
 
-		c.graph.Series = []chart.Series {
+		c.graph.Series = []chart.Series{
 			c.timeSeries1,
 			// c.annotation,
 			c.minSeries,
@@ -587,7 +581,7 @@ func (c *Chart) ProcessGraphData(table *Table) error {
 }
 
 func (c *Chart) SetWidth(v *int) {
-	for range Only.Once {
+	for range only.Once {
 		if v == nil {
 			c.graph.Width = 3840
 			break
@@ -601,7 +595,7 @@ func (c *Chart) SetWidth(v *int) {
 }
 
 func (c *Chart) SetHeight(v *int) {
-	for range Only.Once {
+	for range only.Once {
 		if v == nil {
 			c.graph.Height = 1080
 			break
@@ -615,8 +609,7 @@ func (c *Chart) SetHeight(v *int) {
 }
 
 func (c *Chart) SetFilename(fn string) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if fn == "" {
 			c.Error = errors.New("empty filename")
 			break
@@ -638,7 +631,7 @@ func (c *Chart) SetTitle(title string) error {
 
 func (c *Chart) SetRangeY(min *float64, max *float64) bool {
 	var changed bool
-	for range Only.Once {
+	for range only.Once {
 		if min == nil {
 			min = c.req.DataMin
 		}
@@ -654,7 +647,7 @@ func (c *Chart) SetRangeY(min *float64, max *float64) bool {
 			break
 		}
 
-		c.graph.YAxis.Range = &chart.ContinuousRange {
+		c.graph.YAxis.Range = &chart.ContinuousRange{
 			Min:        *min,
 			Max:        *max,
 			Domain:     0,
@@ -669,7 +662,7 @@ func (c *Chart) SetRangeY(min *float64, max *float64) bool {
 
 func (c *Chart) SetColumns(req GraphRequest) bool {
 	var changed bool
-	for range Only.Once {
+	for range only.Once {
 		// if req.SearchString != nil {
 		// 	c.req.SearchString = req.SearchString
 		// 	changed = true
@@ -700,19 +693,18 @@ func (c *Chart) SetColumns(req GraphRequest) bool {
 }
 
 func (c *Chart) SetX(name string, values ...time.Time) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if len(values) == 0 {
 			c.Error = errors.New("no X values")
 			break
 		}
 
-		c.graph.XAxis = chart.XAxis {
+		c.graph.XAxis = chart.XAxis{
 			Name:           name,
 			NameStyle:      chart.Style{},
 			Style:          chart.Style{},
 			ValueFormatter: chart.TimeValueFormatterWithFormat(DateTimeLayout),
-			Range:          &chart.ContinuousRange {
+			Range: &chart.ContinuousRange{
 				Min:        0,
 				Max:        0,
 				Domain:     0,
@@ -753,8 +745,7 @@ func (c *Chart) SetX(name string, values ...time.Time) error {
 }
 
 func (c *Chart) SetY(name string, values ...float64) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if len(values) == 0 {
 			c.Error = errors.New("no Y values")
 			break
@@ -836,8 +827,7 @@ func (c *Chart) SetY(name string, values ...float64) error {
 }
 
 func (c *Chart) SetY2(name string, values ...float64) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if len(values) == 0 {
 			c.Error = errors.New("no Y values")
 			break
@@ -879,8 +869,7 @@ func (c *Chart) SetY2(name string, values ...float64) error {
 }
 
 func (c *Chart) Generate() error {
-
-	for range Only.Once {
+	for range only.Once {
 		if c.filename == "" {
 			c.Error = errors.New("empty filename")
 			break

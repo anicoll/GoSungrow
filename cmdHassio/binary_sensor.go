@@ -2,16 +2,15 @@ package cmdHassio
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
 const LabelBinarySensor = "binary_sensor"
 
-
 func (m *Mqtt) BinarySensorPublishConfig(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsBinarySensor() {
 			break
 		}
@@ -44,25 +43,25 @@ func (m *Mqtt) BinarySensorPublishConfig(config EntityConfig) error {
 		// 	DeviceClass: "",
 		// }
 
-		payload := BinarySensor {
-			Device:                 newDevice,
-			Name:                   String(JoinStrings(m.DeviceName, config.Name)),
-			StateTopic:             String(JoinStringsForTopic(m.Prefix, LabelBinarySensor, m.ClientId, id, "state")),
+		payload := BinarySensor{
+			Device:     newDevice,
+			Name:       String(JoinStrings(m.DeviceName, config.Name)),
+			StateTopic: String(JoinStringsForTopic(m.Prefix, LabelBinarySensor, m.ClientId, id, "state")),
 			// StateClass:             config.StateClass,
-			ObjectId:               String(id),
-			UniqueId:               String(id),
+			ObjectId: String(id),
+			UniqueId: String(id),
 			// UnitOfMeasurement:      config.Units,
-			DeviceClass:            DeviceClass(config.DeviceClass),
-			Qos:                    0,
-			ForceUpdate:            true,
-			ExpireAfter:            0,
-			Encoding:               "utf-8",
-			EnabledByDefault:       true,
-			PayloadOn:              "true",
-			PayloadOff:             "false",
+			DeviceClass:      DeviceClass(config.DeviceClass),
+			Qos:              0,
+			ForceUpdate:      true,
+			ExpireAfter:      0,
+			Encoding:         "utf-8",
+			EnabledByDefault: true,
+			PayloadOn:        "true",
+			PayloadOff:       "false",
 			// LastResetValueTemplate: config.LastResetValueTemplate,
-			ValueTemplate:          String(config.ValueTemplate),
-			Icon:                   Icon(config.Icon),
+			ValueTemplate: String(config.ValueTemplate),
+			Icon:          Icon(config.Icon),
 
 			// Availability:           &Availability {
 			// 	PayloadAvailable:    "",
@@ -90,8 +89,7 @@ func (m *Mqtt) BinarySensorPublishConfig(config EntityConfig) error {
 }
 
 func (m *Mqtt) BinarySensorPublishValue(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsBinarySensor() {
 			break
 		}
@@ -114,13 +112,13 @@ func (m *Mqtt) BinarySensorPublishValue(config EntityConfig) error {
 			break
 		}
 
-		payload := MqttState {
-			LastReset: config.LastReset,	// m.GetLastReset(config.FullId),
+		payload := MqttState{
+			LastReset: config.LastReset, // m.GetLastReset(config.FullId),
 			Value:     value,
 		}
 		if config.Units == LabelBinarySensor {
-			payload = MqttState {
-				Value:     value,
+			payload = MqttState{
+				Value: value,
 			}
 		}
 
@@ -277,7 +275,7 @@ func (c *BinarySensor) Json() string {
 func (config *EntityConfig) IsBinarySensor() bool {
 	var ok bool
 
-	for range Only.Once {
+	for range only.Once {
 		if config.Value.IsBool() {
 			ok = true
 			break

@@ -1,27 +1,26 @@
 package api
 
 import (
-	"github.com/MickMake/GoUnify/Only"
 	"errors"
 	"fmt"
 	"strings"
-)
 
+	"github.com/anicoll/gosungrow/pkg/only"
+)
 
 type Response struct {
 	ResponseCommon
 }
 
 type ResponseCommon struct {
-	ReqSerialNum string        `json:"req_serial_num"`
-	ResultCode   string        `json:"result_code"`
-	ResultMsg    string        `json:"result_msg"`
+	ReqSerialNum string `json:"req_serial_num"`
+	ResultCode   string `json:"result_code"`
+	ResultMsg    string `json:"result_msg"`
 }
-
 
 func (req ResponseCommon) IsValid() error {
 	var err error
-	for range Only.Once {
+	for range only.Once {
 		err = req.CheckResultMessage()
 		if err != nil {
 			break
@@ -47,14 +46,14 @@ func (req ResponseCommon) IsValid() error {
 
 func (req ResponseCommon) IsTokenValid() bool {
 	var ok bool
-	for range Only.Once {
+	for range only.Once {
 		switch {
-			case req.ResultMsg == "success":
-				ok = true
-			case req.ResultMsg == "er_token_login_invalid":
-				ok = false
-			default:
-				ok = false
+		case req.ResultMsg == "success":
+			ok = true
+		case req.ResultMsg == "er_token_login_invalid":
+			ok = false
+		default:
+			ok = false
 		}
 	}
 	return ok
@@ -74,7 +73,7 @@ func (req ResponseCommon) String() string {
 
 func (req ResponseCommon) CheckResultCode() error {
 	var err error
-	for range Only.Once {
+	for range only.Once {
 		switch req.ResultCode {
 		case "1":
 			err = nil
@@ -97,7 +96,7 @@ func (req ResponseCommon) CheckResultCode() error {
 
 func (req ResponseCommon) CheckResultMessage() error {
 	var err error
-	for range Only.Once {
+	for range only.Once {
 		switch {
 		case req.ResultMsg == "success":
 			err = nil

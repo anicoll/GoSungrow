@@ -2,16 +2,15 @@ package cmdHassio
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
 const LabelDeviceTrigger = "device_trigger"
 
-
 func (m *Mqtt) DeviceTriggerPublishConfig(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsDeviceTrigger() {
 			break
 		}
@@ -23,14 +22,14 @@ func (m *Mqtt) DeviceTriggerPublishConfig(config EntityConfig) error {
 
 		id := JoinStringsForId(m.DeviceName, config.FullId)
 
-		payload := DeviceTrigger {
-			Device:       newDevice,
+		payload := DeviceTrigger{
+			Device: newDevice,
 			// Name:         String(JoinStrings(m.DeviceName, config.Name)),
 			// StateTopic:   JoinStringsForTopic(m.switchPrefix, id, "state"),
 			// CommandTopic: String(JoinStringsForTopic(m.switchPrefix, id, "cmd")),
 			// ObjectId:     String(id),
 			// UniqueId:     String(id),
-			Qos:          0,
+			Qos: 0,
 			// Retain:       true,
 
 			// PayloadOn:     "true",
@@ -49,8 +48,7 @@ func (m *Mqtt) DeviceTriggerPublishConfig(config EntityConfig) error {
 }
 
 func (m *Mqtt) DeviceTriggerPublishValue(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsDeviceTrigger() {
 			break
 		}
@@ -73,7 +71,7 @@ func (m *Mqtt) DeviceTriggerPublishValue(config EntityConfig) error {
 			break
 		}
 
-		payload := MqttState {
+		payload := MqttState{
 			LastReset: config.LastReset, // m.GetLastReset(config.FullId),
 			Value:     value,
 		}
@@ -109,7 +107,6 @@ type DeviceTrigger struct {
 	ValueTemplate Template `json:"value_template,omitempty"`
 }
 
-
 func (c *DeviceTrigger) Json() string {
 	j, _ := json.Marshal(*c)
 	return string(j)
@@ -118,7 +115,7 @@ func (c *DeviceTrigger) Json() string {
 func (config *EntityConfig) IsDeviceTrigger() bool {
 	var ok bool
 
-	for range Only.Once {
+	for range only.Once {
 		if config.Units == LabelDeviceTrigger {
 			ok = true
 			break

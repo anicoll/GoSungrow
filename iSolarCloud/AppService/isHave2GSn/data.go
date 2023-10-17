@@ -1,19 +1,21 @@
 package isHave2GSn
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct"
-
-	"github.com/MickMake/GoUnify/Only"
 	"fmt"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/api"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-const Url = "/v1/devService/isHave2GSn"
-const Disabled = false
-const EndPointName = "AppService.isHave2GSn"
+const (
+	Url          = "/v1/devService/isHave2GSn"
+	Disabled     = false
+	EndPointName = "AppService.isHave2GSn"
+)
 
-type RequestData struct {
-}
+type RequestData struct{}
 
 func (rd RequestData) IsValid() error {
 	return GoStruct.VerifyOptionsRequired(rd)
@@ -23,7 +25,6 @@ func (rd RequestData) Help() string {
 	ret := fmt.Sprintf("")
 	return ret
 }
-
 
 type ResultData struct {
 	// Dummy valueTypes.String `json:"dummy"`
@@ -39,7 +40,7 @@ func (e *ResultData) IsValid() error {
 //func (e *ResultData) UnmarshalJSON(data []byte) error {
 //	var err error
 //
-//	for range Only.Once {
+//	for range only.Once {
 //		if len(data) == 0 {
 //			break
 //		}
@@ -56,7 +57,7 @@ func (e *ResultData) IsValid() error {
 func (e *EndPoint) GetData() api.DataMap {
 	entries := api.NewDataMap()
 
-	for range Only.Once {
+	for range only.Once {
 		entries.StructToDataMap(*e, "", GoStruct.EndPointPath{})
 	}
 

@@ -2,16 +2,15 @@ package cmdHassio
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
 const LabelAlarmControlPanel = "alarm_control_panel"
 
-
 func (m *Mqtt) AlarmControlPanelPublishConfig(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsAlarmControlPanel() {
 			break
 		}
@@ -23,9 +22,9 @@ func (m *Mqtt) AlarmControlPanelPublishConfig(config EntityConfig) error {
 
 		id := JoinStringsForId(m.DeviceName, config.FullId)
 
-		payload := AlarmControlPanel {
-			Device:       newDevice,
-			Name:         String(JoinStrings(m.DeviceName, config.Name)),
+		payload := AlarmControlPanel{
+			Device: newDevice,
+			Name:   String(JoinStrings(m.DeviceName, config.Name)),
 			// StateTopic:   JoinStringsForTopic(m.switchPrefix, id, "state"),
 			CommandTopic: String(JoinStringsForTopic(m.Prefix, LabelAlarmControlPanel, m.ClientId, id, "cmd")),
 			ObjectId:     String(id),
@@ -38,7 +37,7 @@ func (m *Mqtt) AlarmControlPanelPublishConfig(config EntityConfig) error {
 			// StateOn:       "true",
 			// StateOff:      "false",
 			// ValueTemplate: config.ValueTemplate,
-			Icon:          Icon(config.Icon),
+			Icon: Icon(config.Icon),
 
 			// Availability:           &Availability {
 			// 	PayloadAvailable:    "",
@@ -65,8 +64,7 @@ func (m *Mqtt) AlarmControlPanelPublishConfig(config EntityConfig) error {
 }
 
 func (m *Mqtt) AlarmControlPanelPublishValue(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsAlarmControlPanel() {
 			break
 		}
@@ -89,7 +87,7 @@ func (m *Mqtt) AlarmControlPanelPublishValue(config EntityConfig) error {
 			break
 		}
 
-		payload := MqttState {
+		payload := MqttState{
 			LastReset: config.LastReset, // m.GetLastReset(config.FullId),
 			Value:     value,
 		}
@@ -200,7 +198,6 @@ type AlarmControlPanel struct {
 	ValueTemplate Template `json:"value_template,omitempty"`
 }
 
-
 func (c *AlarmControlPanel) Json() string {
 	j, _ := json.Marshal(*c)
 	return string(j)
@@ -209,7 +206,7 @@ func (c *AlarmControlPanel) Json() string {
 func (config *EntityConfig) IsAlarmControlPanel() bool {
 	var ok bool
 
-	for range Only.Once {
+	for range only.Once {
 		if config.Units == LabelAlarmControlPanel {
 			ok = true
 			break

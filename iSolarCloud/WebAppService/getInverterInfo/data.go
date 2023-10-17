@@ -1,20 +1,23 @@
 package getInverterInfo
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
-
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/api"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-const Url = "/v1/devService/getInverterInfo"
-const Disabled = false
-const EndPointName = "WebAppService.getInverterInfo"
+const (
+	Url          = "/v1/devService/getInverterInfo"
+	Disabled     = false
+	EndPointName = "WebAppService.getInverterInfo"
+)
 
 type RequestData struct {
-	PsId      valueTypes.PsId  `json:"ps_id" required:"true"`
+	PsId valueTypes.PsId `json:"ps_id" required:"true"`
 }
 
 func (rd RequestData) IsValid() error {
@@ -26,7 +29,6 @@ func (rd RequestData) Help() string {
 	return ret
 }
 
-
 type ResultData []struct {
 	// Dummy valueTypes.String `json:"dummy"`
 }
@@ -36,11 +38,10 @@ func (e *ResultData) IsValid() error {
 	return err
 }
 
-
 func (e *EndPoint) GetData() api.DataMap {
 	entries := api.NewDataMap()
 
-	for range Only.Once {
+	for range only.Once {
 		entries.StructToDataMap(*e, e.Request.PsId.String(), GoStruct.NewEndPointPath(e.Request.PsId.String()))
 	}
 

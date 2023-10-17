@@ -1,16 +1,16 @@
 package api
 
 import (
-	"github.com/MickMake/GoUnify/Only"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/output"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/reflection"
 	"errors"
 	"fmt"
-	"github.com/MickMake/GoUnify/cmdPath"
 	"os"
 	"path/filepath"
-)
 
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/output"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/reflection"
+	"github.com/anicoll/gosungrow/pkg/cmdpath"
+	"github.com/anicoll/gosungrow/pkg/only"
+)
 
 // func (ep *EndPointStruct) ApiSetFilenamePrefix2(ref interface{}, format string, args ...interface{}) string {
 // 	f := strings.Join(GoStruct.GetStructValuesAsArray(ref), "-")
@@ -74,7 +74,7 @@ func (ep *EndPointStruct) ApiGetJsonFilename() string {
 func (ep *EndPointStruct) GetFilePath() string {
 	var ret string
 
-	for range Only.Once {
+	for range only.Once {
 		var hd string
 		hd, ep.Error = os.UserHomeDir()
 		if ep.Error != nil {
@@ -87,12 +87,11 @@ func (ep *EndPointStruct) GetFilePath() string {
 	return ret
 }
 
-
 // FileExists Checks for existence of a local file.
 func (ep *EndPointStruct) FileExists(fn string) bool {
 	var ok bool
 
-	for range Only.Once {
+	for range only.Once {
 		if fn == "" {
 			fn = ep.ApiGetJsonFilename()
 			if ep.Error != nil {
@@ -100,7 +99,7 @@ func (ep *EndPointStruct) FileExists(fn string) bool {
 			}
 		}
 
-		p := cmdPath.NewPath(fn)
+		p := cmdpath.NewPath(fn)
 		if p.DirExists() {
 			ep.Error = errors.New("file is a directory")
 			ok = false

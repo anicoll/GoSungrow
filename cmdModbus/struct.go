@@ -1,4 +1,5 @@
 //go:build !(freebsd && amd64)
+
 package cmdModbus
 
 import (
@@ -9,23 +10,22 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/MickMake/GoUnify/Only"
-	"github.com/MickMake/GoUnify/cmdLog"
+	"github.com/anicoll/gosungrow/pkg/cmdlog"
+	"github.com/anicoll/gosungrow/pkg/only"
 	"github.com/simonvetter/modbus"
 )
 
-
 type Modbus struct {
-	ClientId      string `json:"client_id"`
-	Username      string `json:"username"`
-	Password      string `json:"password"`
-	Host          string `json:"host"`
-	Port          string `json:"port"`
-	Timeout       time.Duration `json:"timeout"`
-	ServerCert    string `json:"server_cert"`
-	ClientCert    string `json:"client_cert"`
-	ClientKey     string `json:"client_key"`
-	LogLevel      string `json:"log_level"`
+	ClientId   string        `json:"client_id"`
+	Username   string        `json:"username"`
+	Password   string        `json:"password"`
+	Host       string        `json:"host"`
+	Port       string        `json:"port"`
+	Timeout    time.Duration `json:"timeout"`
+	ServerCert string        `json:"server_cert"`
+	ClientCert string        `json:"client_cert"`
+	ClientKey  string        `json:"client_key"`
+	LogLevel   string        `json:"log_level"`
 
 	url            *url.URL
 	client         *modbus.ModbusClient
@@ -36,39 +36,38 @@ type Modbus struct {
 	wordOrder      modbus.WordOrder
 
 	firstRun bool
-	err    error
-	logger cmdLog.Log
+	err      error
+	logger   cmdlog.Log
 }
-
 
 func New(req Modbus) Modbus {
 	var ret Modbus
 
-	for range Only.Once {
-		ret = Modbus {
-			ClientId:       req.ClientId,
-			Username:       req.Username,
-			Password:       req.Password,
-			Host:           req.Host,
-			Port:           req.Port,
-			Timeout:        req.Timeout,
-			ServerCert:     req.ServerCert,
-			ClientCert:     req.ClientCert,
-			ClientKey:      req.ClientKey,
-			LogLevel:       req.LogLevel,
+	for range only.Once {
+		ret = Modbus{
+			ClientId:   req.ClientId,
+			Username:   req.Username,
+			Password:   req.Password,
+			Host:       req.Host,
+			Port:       req.Port,
+			Timeout:    req.Timeout,
+			ServerCert: req.ServerCert,
+			ClientCert: req.ClientCert,
+			ClientKey:  req.ClientKey,
+			LogLevel:   req.LogLevel,
 
 			// url:            nil,
-			client:         nil,
-			config:         &modbus.ClientConfiguration{},
+			client: nil,
+			config: &modbus.ClientConfiguration{},
 			// clientKeyPair:  tls.Certificate{},
 			// serverCertPool: nil,
-			endianness:     modbus.BIG_ENDIAN,
-			wordOrder:      modbus.HIGH_WORD_FIRST,
+			endianness: modbus.BIG_ENDIAN,
+			wordOrder:  modbus.HIGH_WORD_FIRST,
 
-			firstRun:       true,
+			firstRun: true,
 
 			// err:            nil,
-			logger:         cmdLog.New(req.LogLevel),
+			logger: cmdlog.New(req.LogLevel),
 		}
 
 		ret.err = ret.setUrl()
@@ -82,7 +81,7 @@ func New(req Modbus) Modbus {
 	return ret
 }
 
-func (m *Modbus) SetLog(log cmdLog.Log) {
+func (m *Modbus) SetLog(log cmdlog.Log) {
 	m.logger = log
 }
 
@@ -98,8 +97,7 @@ func (m *Modbus) IsError() bool {
 }
 
 func (m *Modbus) setUrl() error {
-
-	for range Only.Once {
+	for range only.Once {
 		if m.Host == "" {
 			m.err = errors.New("Modbus host not defined")
 			break
@@ -163,8 +161,7 @@ func (m *Modbus) setUrl() error {
 }
 
 func (m *Modbus) SetAuth(username string, password string) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if username == "" {
 			m.err = errors.New("username empty")
 			break
@@ -182,7 +179,7 @@ func (m *Modbus) SetAuth(username string, password string) error {
 }
 
 func (m *Modbus) Connect() error {
-	for range Only.Once {
+	for range only.Once {
 		if m.config == nil {
 			m.logger.Debug("Modbus: failed to create modbus client: %v\n", m.err)
 			break
@@ -206,7 +203,7 @@ func (m *Modbus) Connect() error {
 }
 
 func (m *Modbus) Disconnect() error {
-	for range Only.Once {
+	for range only.Once {
 		// close the connection
 		m.err = m.client.Close()
 		if m.err != nil {

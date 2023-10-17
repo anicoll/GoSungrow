@@ -2,16 +2,15 @@ package cmdHassio
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
 const LabelSiren = "siren"
 
-
 func (m *Mqtt) SirenPublishConfig(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsSiren() {
 			break
 		}
@@ -23,9 +22,9 @@ func (m *Mqtt) SirenPublishConfig(config EntityConfig) error {
 
 		id := JoinStringsForId(m.DeviceName, config.FullId)
 
-		payload := Siren {
-			Device:       newDevice,
-			Name:         String(JoinStrings(m.DeviceName, config.Name)),
+		payload := Siren{
+			Device: newDevice,
+			Name:   String(JoinStrings(m.DeviceName, config.Name)),
 			// StateTopic:   JoinStringsForTopic(m.switchPrefix, id, "state"),
 			CommandTopic: String(JoinStringsForTopic(m.Prefix, LabelSiren, m.ClientId, id, "cmd")),
 			ObjectId:     String(id),
@@ -38,7 +37,7 @@ func (m *Mqtt) SirenPublishConfig(config EntityConfig) error {
 			// StateOn:       "true",
 			// StateOff:      "false",
 			// ValueTemplate: config.ValueTemplate,
-			Icon:          Icon(config.Icon),
+			Icon: Icon(config.Icon),
 		}
 
 		tag := JoinStringsForTopic(m.Prefix, LabelSiren, m.ClientId, id, "config")
@@ -49,8 +48,7 @@ func (m *Mqtt) SirenPublishConfig(config EntityConfig) error {
 }
 
 func (m *Mqtt) SirenPublishValue(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsSiren() {
 			break
 		}
@@ -73,7 +71,7 @@ func (m *Mqtt) SirenPublishValue(config EntityConfig) error {
 			break
 		}
 
-		payload := MqttState {
+		payload := MqttState{
 			LastReset: config.LastReset, // m.GetLastReset(config.FullId),
 			Value:     value,
 		}
@@ -181,7 +179,6 @@ type Siren struct {
 	UniqueId String `json:"unique_id,omitempty"`
 }
 
-
 func (c *Siren) Json() string {
 	j, _ := json.Marshal(*c)
 	return string(j)
@@ -190,7 +187,7 @@ func (c *Siren) Json() string {
 func (config *EntityConfig) IsSiren() bool {
 	var ok bool
 
-	for range Only.Once {
+	for range only.Once {
 		if config.Units == LabelSiren {
 			ok = true
 			break

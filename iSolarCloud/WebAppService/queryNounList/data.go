@@ -1,16 +1,19 @@
 package queryNounList
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/api"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-const Url = "/v1/faultService/queryNounList"
-const Disabled = false
-const EndPointName = "WebAppService.queryNounList"
+const (
+	Url          = "/v1/faultService/queryNounList"
+	Disabled     = false
+	EndPointName = "WebAppService.queryNounList"
+)
 
 type RequestData struct {
 	FaultTypeCode valueTypes.Integer `json:"fault_type_code" required:"true"`
@@ -25,7 +28,6 @@ func (rd RequestData) Help() string {
 	return ret
 }
 
-
 type ResultData struct {
 	NounInfo []interface{} `json:"nounInfo"`
 }
@@ -38,7 +40,7 @@ func (e *ResultData) IsValid() error {
 func (e *EndPoint) GetData() api.DataMap {
 	entries := api.NewDataMap()
 
-	for range Only.Once {
+	for range only.Once {
 		entries.StructToDataMap(*e, "", GoStruct.EndPointPath{})
 	}
 

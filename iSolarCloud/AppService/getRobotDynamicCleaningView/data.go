@@ -1,19 +1,22 @@
 package getRobotDynamicCleaningView
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/api"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-const Url = "/v1/devService/getRobotDynamicCleaningView"
-const Disabled = false
-const EndPointName = "AppService.getRobotDynamicCleaningView"
+const (
+	Url          = "/v1/devService/getRobotDynamicCleaningView"
+	Disabled     = false
+	EndPointName = "AppService.getRobotDynamicCleaningView"
+)
 
 type RequestData struct {
-	PsId     valueTypes.PsId `json:"ps_id" required:"true"`
+	PsId valueTypes.PsId `json:"ps_id" required:"true"`
 }
 
 func (rd RequestData) IsValid() error {
@@ -24,7 +27,6 @@ func (rd RequestData) Help() string {
 	ret := fmt.Sprintf("")
 	return ret
 }
-
 
 type ResultData struct {
 	DynamicRobot []interface{} `json:"dynamic_robot"`
@@ -40,7 +42,7 @@ func (e *ResultData) IsValid() error {
 func (e *EndPoint) GetData() api.DataMap {
 	entries := api.NewDataMap()
 
-	for range Only.Once {
+	for range only.Once {
 		entries.StructToDataMap(*e, e.Request.PsId.String(), GoStruct.NewEndPointPath(e.Request.PsId.String()))
 	}
 

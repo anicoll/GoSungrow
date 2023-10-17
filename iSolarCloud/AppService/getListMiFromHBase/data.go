@@ -1,17 +1,20 @@
 package getListMiFromHBase
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
-
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/api"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-const Url = "/v1/commonService/getListMiFromHBase"
-const Disabled = false
-const EndPointName = "AppService.getListMiFromHBase"
+const (
+	Url          = "/v1/commonService/getListMiFromHBase"
+	Disabled     = false
+	EndPointName = "AppService.getListMiFromHBase"
+)
 
 type RequestData struct {
 	Table      valueTypes.String `json:"table" required:"true"`
@@ -27,7 +30,6 @@ func (rd RequestData) Help() string {
 	return ret
 }
 
-
 type ResultData struct {
 	// Dummy valueTypes.String `json:"dummy"`
 }
@@ -42,7 +44,7 @@ func (e *ResultData) IsValid() error {
 //func (e *ResultData) UnmarshalJSON(data []byte) error {
 //	var err error
 //
-//	for range Only.Once {
+//	for range only.Once {
 //		if len(data) == 0 {
 //			break
 //		}
@@ -59,7 +61,7 @@ func (e *ResultData) IsValid() error {
 func (e *EndPoint) GetData() api.DataMap {
 	entries := api.NewDataMap()
 
-	for range Only.Once {
+	for range only.Once {
 		entries.StructToDataMap(*e, "", GoStruct.EndPointPath{})
 	}
 

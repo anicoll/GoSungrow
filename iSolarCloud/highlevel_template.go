@@ -1,19 +1,19 @@
 package iSolarCloud
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getTemplateList"
-	"github.com/MickMake/GoSungrow/iSolarCloud/WebAppService/queryUserCurveTemplateData"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
 	"errors"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
 	"time"
-)
 
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getTemplateList"
+	"github.com/anicoll/gosungrow/iSolarCloud/WebAppService/queryUserCurveTemplateData"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+	"github.com/anicoll/gosungrow/pkg/only"
+)
 
 // TemplateList - Return all templates.
 func (sg *SunGrow) TemplateList() error {
-	for range Only.Once {
+	for range only.Once {
 		data := sg.NewSunGrowData()
 		data.SetEndpoints(getTemplateList.EndPointName)
 		data.SetArgs()
@@ -52,7 +52,7 @@ func (sg *SunGrow) TemplateList() error {
 
 // TemplatePoints - Return all points associated with a template_id.
 func (sg *SunGrow) TemplatePoints(template string) error {
-	for range Only.Once {
+	for range only.Once {
 		if template == "" {
 			sg.Error = errors.New("no template defined")
 			break
@@ -124,7 +124,7 @@ func (sg *SunGrow) TemplatePoints(template string) error {
 
 // TemplateData - Return all point data associated with a template_id.
 func (sg *SunGrow) TemplateData(template string, startDate string, endDate string, interval string) error {
-	for range Only.Once {
+	for range only.Once {
 		if template == "" {
 			sg.Error = errors.New("no template defined")
 			break
@@ -201,7 +201,7 @@ func (sg *SunGrow) TemplateData(template string, startDate string, endDate strin
 
 // TemplateDataSave - Return all point data associated with a template_id and save to files.
 func (sg *SunGrow) TemplateDataSave(template string, startDate string, endDate string, interval string) error {
-	for range Only.Once {
+	for range only.Once {
 		if template == "" {
 			sg.Error = errors.New("no template defined")
 			break
@@ -276,11 +276,10 @@ func (sg *SunGrow) TemplateDataSave(template string, startDate string, endDate s
 	return sg.Error
 }
 
-
 // GetTemplateList - AppService.getTemplateList
 func (sg *SunGrow) GetTemplateList() (getTemplateList.ResultData, error) {
 	var ret getTemplateList.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getTemplateList.EndPointName,
 			getTemplateList.RequestData{},
 			DefaultCacheTimeout,
@@ -300,7 +299,7 @@ func (sg *SunGrow) GetTemplateList() (getTemplateList.ResultData, error) {
 func (sg *SunGrow) QueryUserCurveTemplateData(template string) (queryUserCurveTemplateData.ResultData, error) {
 	var ret queryUserCurveTemplateData.ResultData
 
-	for range Only.Once {
+	for range only.Once {
 		if template == "" {
 			sg.Error = errors.New("no template defined")
 			break

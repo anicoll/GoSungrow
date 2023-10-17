@@ -1,19 +1,21 @@
 package getOrgListForUser
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
-	"github.com/MickMake/GoUnify/Only"
 	"fmt"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/api"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-const Url = "/v1/orgService/getOrgListForUser"
-const Disabled = false
-const EndPointName = "AppService.getOrgListForUser"
+const (
+	Url          = "/v1/orgService/getOrgListForUser"
+	Disabled     = false
+	EndPointName = "AppService.getOrgListForUser"
+)
 
-type RequestData struct {
-}
+type RequestData struct{}
 
 func (rd RequestData) IsValid() error {
 	return GoStruct.VerifyOptionsRequired(rd)
@@ -29,7 +31,7 @@ type ResultData []struct {
 	GcjLongitude   valueTypes.Float   `json:"gcj_longitude"`
 	Id             valueTypes.Integer `json:"id"`
 	IsLeaf         valueTypes.Bool    `json:"is_leaf"`
-	MapLevel       interface{} `json:"map_level"`
+	MapLevel       interface{}        `json:"map_level"`
 	OrgId          valueTypes.Integer `json:"org_id"`
 	OrgIndexCode   valueTypes.String  `json:"org_index_code"`
 	OrgIsShow      valueTypes.Integer `json:"org_is_show"`
@@ -57,7 +59,7 @@ func (e *ResultData) IsValid() error {
 //func (e *ResultData) UnmarshalJSON(data []byte) error {
 //	var err error
 //
-//	for range Only.Once {
+//	for range only.Once {
 //		if len(data) == 0 {
 //			break
 //		}
@@ -74,7 +76,7 @@ func (e *ResultData) IsValid() error {
 func (e *EndPoint) GetData() api.DataMap {
 	entries := api.NewDataMap()
 
-	for range Only.Once {
+	for range only.Once {
 		entries.StructToDataMap(*e, "", GoStruct.EndPointPath{})
 	}
 

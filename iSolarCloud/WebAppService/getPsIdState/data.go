@@ -1,19 +1,22 @@
 package getPsIdState
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/api"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-const Url = "/v1/powerStationService/getPsIdState"
-const Disabled = false
-const EndPointName = "WebAppService.getPsIdState"
+const (
+	Url          = "/v1/powerStationService/getPsIdState"
+	Disabled     = false
+	EndPointName = "WebAppService.getPsIdState"
+)
 
 type RequestData struct {
-	PsId     valueTypes.PsId `json:"ps_id" required:"true"`
+	PsId valueTypes.PsId `json:"ps_id" required:"true"`
 }
 
 func (rd RequestData) IsValid() error {
@@ -24,7 +27,6 @@ func (rd RequestData) Help() string {
 	ret := fmt.Sprintf("")
 	return ret
 }
-
 
 type ResultData struct {
 	AllPsCount     valueTypes.Integer `json:"allPsCount"`
@@ -46,7 +48,7 @@ func (e *ResultData) IsValid() error {
 func (e *EndPoint) GetData() api.DataMap {
 	entries := api.NewDataMap()
 
-	for range Only.Once {
+	for range only.Once {
 		// pkg := reflection.GetName("", *e)
 		// dt := valueTypes.NewDateTime(valueTypes.Now)
 		// name := pkg + "." + e.Request.PsId.String()

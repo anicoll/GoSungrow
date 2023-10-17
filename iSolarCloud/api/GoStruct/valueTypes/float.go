@@ -2,22 +2,22 @@ package valueTypes
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"math"
 	"strconv"
-)
 
+	"github.com/anicoll/gosungrow/pkg/only"
+)
 
 type Float struct {
 	string  `json:"string,omitempty"`
 	float64 `json:"float,omitempty"`
-	Valid   bool `json:"valid"`
+	Valid   bool  `json:"valid"`
 	Error   error `json:"-"`
 }
 
 // UnmarshalJSON - Convert JSON to value
 func (t *Float) UnmarshalJSON(data []byte) error {
-	for range Only.Once {
+	for range only.Once {
 		t.Valid = false
 
 		if len(data) == 0 {
@@ -48,7 +48,7 @@ func (t *Float) UnmarshalJSON(data []byte) error {
 func (t Float) MarshalJSON() ([]byte, error) {
 	var data []byte
 
-	for range Only.Once {
+	for range only.Once {
 		t.Valid = false
 
 		data, t.Error = json.Marshal(t.float64)
@@ -78,7 +78,7 @@ func (t Float) String() string {
 }
 
 func (t *Float) SetString(value string) Float {
-	for range Only.Once {
+	for range only.Once {
 		t.string = value
 		t.float64 = 0
 		t.Valid = false
@@ -105,7 +105,7 @@ func (t *Float) SetString(value string) Float {
 }
 
 func (t *Float) SetValue(value float64) Float {
-	for range Only.Once {
+	for range only.Once {
 		t.string = ""
 		t.float64 = value
 		t.Valid = true
@@ -116,7 +116,7 @@ func (t *Float) SetValue(value float64) Float {
 }
 
 func (t *Float) SetPrecision(precision int) Float {
-	for range Only.Once {
+	for range only.Once {
 		t.float64 = SetPrecision(t.float64, precision)
 	}
 
@@ -143,5 +143,5 @@ func round(num float64) int {
 
 func SetPrecision(num float64, precision int) float64 {
 	output := math.Pow(10, float64(precision))
-	return float64(round(num * output)) / output
+	return float64(round(num*output)) / output
 }

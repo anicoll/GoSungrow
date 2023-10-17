@@ -1,16 +1,19 @@
 package queryDevicePointMinuteDataList
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/api"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-const Url = "/v1/commonService/queryDevicePointMinuteDataList"
-const Disabled = false
-const EndPointName = "AppService.queryDevicePointMinuteDataList"
+const (
+	Url          = "/v1/commonService/queryDevicePointMinuteDataList"
+	Disabled     = false
+	EndPointName = "AppService.queryDevicePointMinuteDataList"
+)
 
 // ../bin/GoSungrow api raw AppService.queryDevicePointMinuteDataList '{"data_point":"p13148","data_type":"1","points":"'$(perl -e 'foreach(10000 .. 20999){print"p$_,"}')'","query_type":"1","ps_key":"1171348_14_1_2","start_time_stamp":"20221201223000","end_time_stamp":"20221201223000"}'
 
@@ -33,7 +36,6 @@ func (rd RequestData) Help() string {
 	return ret
 }
 
-
 type ResultData struct {
 	Data []DataPoint `json:"data" PointIdReplace:"false" DataTable:"true" DataTableSortOn:"TimeStamp"`
 }
@@ -41,7 +43,7 @@ type ResultData struct {
 func (e *ResultData) UnmarshalJSON(data []byte) error {
 	var err error
 
-	for range Only.Once {
+	for range only.Once {
 		if len(data) == 0 {
 			break
 		}
@@ -58,15 +60,15 @@ func (e *ResultData) UnmarshalJSON(data []byte) error {
 type DataPoint struct {
 	GoStruct.GoStructParent `json:"-" PointIdReplace:"true" PointIdFrom:"TimeStamp" PointNameDateFormat:"DateTimeAltLayout" PointTimestampFrom:"TimeStamp"`
 
-	TimeStamp               valueTypes.DateTime             `json:"time_stamp" PointNameDateFormat:"DateTimeLayout"`
-	Points                  map[string]valueTypes.UnitValue `json:"points"`
-	IsPlatformDefaultUnit   valueTypes.Bool                 `json:"is_platform_default_unit"`
+	TimeStamp             valueTypes.DateTime             `json:"time_stamp" PointNameDateFormat:"DateTimeLayout"`
+	Points                map[string]valueTypes.UnitValue `json:"points"`
+	IsPlatformDefaultUnit valueTypes.Bool                 `json:"is_platform_default_unit"`
 }
 
 func (e *DataPoint) UnmarshalJSON(data []byte) error {
 	var err error
 
-	for range Only.Once {
+	for range only.Once {
 		if len(data) == 0 {
 			break
 		}
@@ -85,7 +87,7 @@ func (e *DataPoint) UnmarshalJSON(data []byte) error {
 			break
 		}
 
-		d.Points = make(map[string]valueTypes.UnitValue)	// @TODO - change to UVS
+		d.Points = make(map[string]valueTypes.UnitValue) // @TODO - change to UVS
 		for k, v := range mp {
 			if k == "is_platform_default_unit" {
 				continue
@@ -104,7 +106,6 @@ func (e *DataPoint) UnmarshalJSON(data []byte) error {
 
 	return err
 }
-
 
 func (e *ResultData) IsValid() error {
 	var err error

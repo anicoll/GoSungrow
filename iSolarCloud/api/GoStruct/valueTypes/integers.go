@@ -2,10 +2,10 @@ package valueTypes
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"strconv"
-)
 
+	"github.com/anicoll/gosungrow/pkg/only"
+)
 
 type Integer struct {
 	string `json:"string,omitempty"`
@@ -16,7 +16,7 @@ type Integer struct {
 
 // UnmarshalJSON - Convert JSON to value
 func (t *Integer) UnmarshalJSON(data []byte) error {
-	for range Only.Once {
+	for range only.Once {
 		t.Valid = false
 
 		if len(data) == 0 {
@@ -46,7 +46,7 @@ func (t *Integer) UnmarshalJSON(data []byte) error {
 // MarshalJSON - Convert value to JSON
 func (t Integer) MarshalJSON() ([]byte, error) {
 	var data []byte
-	for range Only.Once {
+	for range only.Once {
 		t.Valid = false
 
 		data, t.Error = json.Marshal(t.int64)
@@ -86,7 +86,7 @@ func (t Integer) MatchString(comp string) bool {
 }
 
 func (t *Integer) SetString(value string) Integer {
-	for range Only.Once {
+	for range only.Once {
 		t.string = value
 		t.int64 = 0
 		t.Valid = false
@@ -113,7 +113,7 @@ func (t *Integer) SetString(value string) Integer {
 }
 
 func (t *Integer) SetValue(value int64) Integer {
-	for range Only.Once {
+	for range only.Once {
 		t.string = ""
 		t.int64 = value
 		t.Valid = true
@@ -137,17 +137,16 @@ func SetIntegerValue(value int64) Integer {
 	return t.SetValue(value)
 }
 
-
 type Count struct {
 	string `json:"string,omitempty"`
 	int64  `json:"integer,omitempty"`
-	Valid   bool `json:"valid"`
-	Error   error `json:"-"`
+	Valid  bool  `json:"valid"`
+	Error  error `json:"-"`
 }
 
 // UnmarshalJSON - Convert JSON to value
 func (t *Count) UnmarshalJSON(data []byte) error {
-	for range Only.Once {
+	for range only.Once {
 		t.Valid = false
 
 		if len(data) == 0 {
@@ -176,7 +175,7 @@ func (t *Count) UnmarshalJSON(data []byte) error {
 func (t Count) MarshalJSON() ([]byte, error) {
 	var data []byte
 
-	for range Only.Once {
+	for range only.Once {
 		t.Valid = false
 
 		data, t.Error = json.Marshal(t.int64)
@@ -206,7 +205,7 @@ func (t Count) Match(comp int64) bool {
 }
 
 func (t *Count) SetString(value string) Count {
-	for range Only.Once {
+	for range only.Once {
 		t.string = value
 		t.int64 = 0
 		t.Valid = false
@@ -233,7 +232,7 @@ func (t *Count) SetString(value string) Count {
 }
 
 func (t *Count) SetValue(value int64) Count {
-	for range Only.Once {
+	for range only.Once {
 		t.string = ""
 		t.int64 = value
 		t.Valid = true

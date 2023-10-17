@@ -1,11 +1,10 @@
 package GoStruct
 
-
 // -------------------------------------------------------------------------------- //
 // From struct_reflect.go
 //
 // func (r *Reflect) ConvertToState() {
-// 	for range Only.Once {
+// 	for range only.Once {
 // 		var ok bool
 //
 // 		switch {
@@ -23,7 +22,7 @@ package GoStruct
 // }
 //
 // func (r *Reflect) SetValues(values ...interface{}) {
-// 	for range Only.Once {
+// 	for range only.Once {
 // 		r.InterfaceValue = values
 // 		var uvs valueTypes.UnitValues
 // 		for _, value := range values {
@@ -36,11 +35,10 @@ package GoStruct
 // 	}
 // }
 
-
 // func FindStart(fieldName string, Parent *Reflect, Current *Reflect, name EndPointPath) *Reflect {
 // 	var ret Reflect
 //
-// 	for range Only.Once {
+// 	for range only.Once {
 // 		if Current.Kind == reflect.Pointer {
 // 			// Special case:
 // 			// We're going to change the pointer to a proper object reference.
@@ -143,7 +141,7 @@ package GoStruct
 // func (sm *StructMap) GetTables() StructTables {
 // 	var ret StructTables
 //
-// 	for range Only.Once {
+// 	for range only.Once {
 // 		st := sm.GetResultTableData()
 // 		ret = append(ret, st)
 //
@@ -164,7 +162,7 @@ package GoStruct
 // func (sm *StructMap) GetTableData(name string) *StructTable {
 // 	var ret StructTable
 //
-// 	for range Only.Once {
+// 	for range only.Once {
 // 		if current, ok := sm.TableMap[name]; ok {
 // 			sm.Error = ret.Process(name, current)
 // 			_, _ = ret.CreateTable()
@@ -174,7 +172,7 @@ package GoStruct
 // 		sm.PrintDebug("GetTableData(%s) - UNKNOWN path:%s type:%s\n", name, ret.Current.FieldPath, ret.Current.Kind)
 // 	}
 //
-// 	// for range Only.Once {
+// 	// for range only.Once {
 // 	// 	var ok bool
 // 	// 	if ret.Current, ok = sm.TableMap[name]; !ok {
 // 	// 		break
@@ -302,7 +300,7 @@ package GoStruct
 // 	var ret StructTable
 //
 // 	fmt.Printf("NOT IMPLEMENTED YET.\n")
-// 	// for range Only.Once {
+// 	// for range only.Once {
 // 	// 	var sorted []string
 // 	// 	// @TODO - Add in other column sorting options here.
 // 	// 	for name := range sm.Map {
@@ -388,7 +386,7 @@ package GoStruct
 // func (sm *StructMap) SaveGoStructOptions(Child *Reflect) bool {
 // 	var yes bool
 //
-// 	for range Only.Once {
+// 	for range only.Once {
 // 		var ds DataTags
 // 		ds = Child.DataStructure
 // 		ds.Json = ""
@@ -413,4 +411,3 @@ package GoStruct
 // 	sm.GoStructOptions = nil
 // 	sm.GoStructOptionCurrent = nil
 // }
-

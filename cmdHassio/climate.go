@@ -2,16 +2,15 @@ package cmdHassio
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
 const LabelClimate = "climate"
 
-
 func (m *Mqtt) ClimatePublishConfig(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsClimate() {
 			break
 		}
@@ -23,22 +22,22 @@ func (m *Mqtt) ClimatePublishConfig(config EntityConfig) error {
 
 		id := JoinStringsForId(m.DeviceName, config.FullId)
 
-		payload := Climate {
-			Device:       newDevice,
-			Name:         String(JoinStrings(m.DeviceName, config.Name)),
+		payload := Climate{
+			Device: newDevice,
+			Name:   String(JoinStrings(m.DeviceName, config.Name)),
 			// StateTopic:   JoinStringsForTopic(m.switchPrefix, id, "state"),
 			// CommandTopic: String(JoinStringsForTopic(m.switchPrefix, id, "cmd")),
-			ObjectId:     String(id),
-			UniqueId:     String(id),
-			Qos:          0,
-			Retain:       true,
+			ObjectId: String(id),
+			UniqueId: String(id),
+			Qos:      0,
+			Retain:   true,
 
 			// PayloadOn:     "true",
 			// PayloadOff:    "false",
 			// StateOn:       "true",
 			// StateOff:      "false",
 			// ValueTemplate: config.ValueTemplate,
-			Icon:          Icon(config.Icon),
+			Icon: Icon(config.Icon),
 		}
 
 		tag := JoinStringsForTopic(m.Prefix, LabelClimate, m.ClientId, id, "config")
@@ -49,8 +48,7 @@ func (m *Mqtt) ClimatePublishConfig(config EntityConfig) error {
 }
 
 func (m *Mqtt) ClimatePublishValue(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsClimate() {
 			break
 		}
@@ -73,7 +71,7 @@ func (m *Mqtt) ClimatePublishValue(config EntityConfig) error {
 			break
 		}
 
-		payload := MqttState {
+		payload := MqttState{
 			LastReset: config.LastReset, // m.GetLastReset(config.FullId),
 			Value:     value,
 		}
@@ -289,7 +287,6 @@ type Climate struct {
 	ValueTemplate Template `json:"value_template,omitempty"`
 }
 
-
 func (c *Climate) Json() string {
 	j, _ := json.Marshal(*c)
 	return string(j)
@@ -298,7 +295,7 @@ func (c *Climate) Json() string {
 func (config *EntityConfig) IsClimate() bool {
 	var ok bool
 
-	for range Only.Once {
+	for range only.Once {
 		if config.Units == LabelClimate {
 			ok = true
 			break

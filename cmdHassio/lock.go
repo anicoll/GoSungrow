@@ -2,16 +2,15 @@ package cmdHassio
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
 const LabelLock = "lock"
 
-
 func (m *Mqtt) LockPublishConfig(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsLock() {
 			break
 		}
@@ -23,9 +22,9 @@ func (m *Mqtt) LockPublishConfig(config EntityConfig) error {
 
 		id := JoinStringsForId(m.DeviceName, config.FullId)
 
-		payload := Lock {
-			Device:       newDevice,
-			Name:         String(JoinStrings(m.DeviceName, config.Name)),
+		payload := Lock{
+			Device: newDevice,
+			Name:   String(JoinStrings(m.DeviceName, config.Name)),
 			// StateTopic:   JoinStringsForTopic(m.switchPrefix, id, "state"),
 			CommandTopic: String(JoinStringsForTopic(m.Prefix, LabelLock, m.ClientId, id, "cmd")),
 			ObjectId:     String(id),
@@ -38,7 +37,7 @@ func (m *Mqtt) LockPublishConfig(config EntityConfig) error {
 			// StateOn:       "true",
 			// StateOff:      "false",
 			// ValueTemplate: config.ValueTemplate,
-			Icon:          Icon(config.Icon),
+			Icon: Icon(config.Icon),
 		}
 
 		tag := JoinStringsForTopic(m.Prefix, LabelLock, m.ClientId, id, "config")
@@ -49,8 +48,7 @@ func (m *Mqtt) LockPublishConfig(config EntityConfig) error {
 }
 
 func (m *Mqtt) LockPublishValue(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsLock() {
 			break
 		}
@@ -167,7 +165,6 @@ type Lock struct {
 	ValueTemplate String `json:"value_template,omitempty"`
 }
 
-
 func (c *Lock) Json() string {
 	j, _ := json.Marshal(*c)
 	return string(j)
@@ -176,7 +173,7 @@ func (c *Lock) Json() string {
 func (config *EntityConfig) IsLock() bool {
 	var ok bool
 
-	for range Only.Once {
+	for range only.Once {
 		if config.Units == LabelLock {
 			ok = true
 			break

@@ -1,19 +1,20 @@
 package api
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/output"
 	"errors"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
 	"sort"
 	"strings"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/output"
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-
-type Areas map[AreaName]AreaStruct // TypeEndPoints		// Map of EndPoints by area name.
-type AreaName string
-type AreaNames []AreaName
-
+type (
+	Areas     map[AreaName]AreaStruct // TypeEndPoints		// Map of EndPoints by area name.
+	AreaName  string
+	AreaNames []AreaName
+)
 
 func (an *Areas) Exists(area string) bool {
 	var ok bool
@@ -31,7 +32,7 @@ func (an AreaName) String() string {
 
 func (an *Areas) EndpointExists(area AreaName, name EndPointName) error {
 	var err error
-	for range Only.Once {
+	for range only.Once {
 		if _, ok := (*an)[area]; !ok {
 			err = errors.New("unknown endpoint area")
 			break
@@ -58,7 +59,7 @@ func (an *Areas) SortAreas() AreaNames {
 
 func (an *Areas) GetArea(area AreaName) *Area {
 	var ret *Area
-	for range Only.Once {
+	for range only.Once {
 		if _, ok := (*an)[area]; !ok {
 			break
 		}
@@ -69,7 +70,7 @@ func (an *Areas) GetArea(area AreaName) *Area {
 func (an *Areas) GetEndPoint(area AreaName, endpoint EndPointName) EndPoint {
 	var ret EndPoint
 
-	for range Only.Once {
+	for range only.Once {
 		if area == "" {
 			ret = (*an)[NullAreaName].EndPoints[NullEndPointName]
 			ret = ret.SetError("empty endpoint area name")
@@ -114,7 +115,7 @@ func (an *Areas) GetEndPoint(area AreaName, endpoint EndPointName) EndPoint {
 
 func (an *Areas) RequestArgs(area AreaName, endpoint EndPointName) map[string]string {
 	var args map[string]string
-	for range Only.Once {
+	for range only.Once {
 		ep := an.GetEndPoint(area, endpoint)
 		if ep.IsError() {
 			fmt.Printf("RequestArgs(): %s\n", ep.GetError())
@@ -128,7 +129,7 @@ func (an *Areas) RequestArgs(area AreaName, endpoint EndPointName) map[string]st
 
 func (an *Areas) RequestRequiresArgs(area AreaName, endpoint EndPointName) bool {
 	var yes bool
-	for range Only.Once {
+	for range only.Once {
 		ep := an.GetEndPoint(area, endpoint)
 		if ep.IsError() {
 			fmt.Printf("RequestRequiresArgs(): %s\n", ep.GetError())
@@ -144,7 +145,7 @@ func (an *Areas) RequestRequiresArgs(area AreaName, endpoint EndPointName) bool 
 }
 
 func (an Areas) ListAreas() {
-	for range Only.Once {
+	for range only.Once {
 		fmt.Println("Listing all endpoint areas:")
 
 		table := output.NewTable("Areas", "Enabled EndPoints", "Disabled EndPoints", "Coverage %")
@@ -268,7 +269,7 @@ func (an Areas) ListAreas() {
 
 func (an Areas) ListEndpoints(area string) error {
 	var err error
-	for range Only.Once {
+	for range only.Once {
 		if area == "" {
 			fmt.Printf("Listing all areas:\n")
 			for _, a := range an.SortAreas() {
@@ -291,7 +292,7 @@ func (an Areas) ListEndpoints(area string) error {
 func (an *Areas) SetRequest(area AreaName, endpoint EndPointName, ref interface{}) error {
 	var err error
 
-	for range Only.Once {
+	for range only.Once {
 		ep := an.GetEndPoint(area, endpoint)
 		if ep.IsError() {
 			err = ep.GetError()

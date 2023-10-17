@@ -2,16 +2,15 @@ package cmdHassio
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
 const LabelFan = "fan"
 
-
 func (m *Mqtt) FanPublishConfig(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsFan() {
 			break
 		}
@@ -23,9 +22,9 @@ func (m *Mqtt) FanPublishConfig(config EntityConfig) error {
 
 		id := JoinStringsForId(m.DeviceName, config.FullId)
 
-		payload := Fan {
-			Device:       newDevice,
-			Name:         String(JoinStrings(m.DeviceName, config.Name)),
+		payload := Fan{
+			Device: newDevice,
+			Name:   String(JoinStrings(m.DeviceName, config.Name)),
 			// StateTopic:   JoinStringsForTopic(m.switchPrefix, id, "state"),
 			CommandTopic: String(JoinStringsForTopic(m.Prefix, LabelFan, m.ClientId, id, "cmd")),
 			ObjectId:     String(id),
@@ -38,7 +37,7 @@ func (m *Mqtt) FanPublishConfig(config EntityConfig) error {
 			// StateOn:       "true",
 			// StateOff:      "false",
 			// ValueTemplate: config.ValueTemplate,
-			Icon:          Icon(config.Icon),
+			Icon: Icon(config.Icon),
 		}
 
 		tag := JoinStringsForTopic(m.Prefix, LabelFan, m.ClientId, id, "config")
@@ -49,8 +48,7 @@ func (m *Mqtt) FanPublishConfig(config EntityConfig) error {
 }
 
 func (m *Mqtt) FanPublishValue(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsFan() {
 			break
 		}
@@ -73,7 +71,7 @@ func (m *Mqtt) FanPublishValue(config EntityConfig) error {
 			break
 		}
 
-		payload := MqttState {
+		payload := MqttState{
 			LastReset: config.LastReset, // m.GetLastReset(config.FullId),
 			Value:     value,
 		}
@@ -218,7 +216,6 @@ type Fan struct {
 	UniqueId String `json:"unique_id,omitempty"`
 }
 
-
 func (c *Fan) Json() string {
 	j, _ := json.Marshal(*c)
 	return string(j)
@@ -227,7 +224,7 @@ func (c *Fan) Json() string {
 func (config *EntityConfig) IsFan() bool {
 	var ok bool
 
-	for range Only.Once {
+	for range only.Once {
 		if config.Units == LabelFan {
 			ok = true
 			break

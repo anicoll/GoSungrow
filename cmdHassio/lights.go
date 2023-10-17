@@ -2,16 +2,16 @@ package cmdHassio
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
 const LabelLight = "light"
 
-
 func (m *Mqtt) PublishLightConfig(config EntityConfig) error {
 	// func (m *Mqtt) PublishLightConfig(id string, name string, subName string, units string, valueName string, class string) error {
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsLight() {
 			break
 		}
@@ -23,12 +23,12 @@ func (m *Mqtt) PublishLightConfig(config EntityConfig) error {
 
 		id := JoinStringsForId(m.DeviceName, config.FullId)
 
-		payload := Light {
-			Device:                 newDevice,
-			Name:                   String(JoinStrings(m.DeviceName, config.Name)),
-			StateTopic:             String(JoinStringsForTopic(m.Prefix, LabelLight, m.ClientId, id, "state")),
-			UniqueId:               String(id),
-			ObjectId:               String(id),
+		payload := Light{
+			Device:     newDevice,
+			Name:       String(JoinStrings(m.DeviceName, config.Name)),
+			StateTopic: String(JoinStringsForTopic(m.Prefix, LabelLight, m.ClientId, id, "state")),
+			UniqueId:   String(id),
+			ObjectId:   String(id),
 
 			// StateClass:             config.StateClass,
 			// UniqueId:               id,
@@ -39,11 +39,11 @@ func (m *Mqtt) PublishLightConfig(config EntityConfig) error {
 			// ExpireAfter:            0,
 			// Encoding:               "utf-8",
 			// EnabledByDefault:       true,
-			PayloadOn:              "true",
-			PayloadOff:             "false",
+			PayloadOn:  "true",
+			PayloadOff: "false",
 			// LastResetValueTemplate: config.LastResetValueTemplate,
-			StateValueTemplate:     String(config.ValueTemplate),
-			Icon:                   Icon(config.Icon),
+			StateValueTemplate: String(config.ValueTemplate),
+			Icon:               Icon(config.Icon),
 		}
 
 		tag := JoinStringsForTopic(m.Prefix, LabelLight, m.ClientId, id, "config")
@@ -53,8 +53,7 @@ func (m *Mqtt) PublishLightConfig(config EntityConfig) error {
 }
 
 func (m *Mqtt) LightPublishValue(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsLight() {
 			break
 		}
@@ -77,8 +76,8 @@ func (m *Mqtt) LightPublishValue(config EntityConfig) error {
 			break
 		}
 
-		payload := MqttState {
-			LastReset: config.LastReset,	// m.GetLastReset(config.FullId),
+		payload := MqttState{
+			LastReset: config.LastReset, // m.GetLastReset(config.FullId),
 			Value:     value,
 		}
 		m.err = m.Publish(tag, 0, true, payload.Json())
@@ -579,7 +578,7 @@ func (c *Light) Json() string {
 func (config *EntityConfig) IsLight() bool {
 	var ok bool
 
-	for range Only.Once {
+	for range only.Once {
 		if config.Units == LabelLight {
 			ok = true
 			break
@@ -588,7 +587,6 @@ func (config *EntityConfig) IsLight() bool {
 
 	return ok
 }
-
 
 // {
 //	"brightness": true,

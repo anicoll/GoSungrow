@@ -4,12 +4,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
 	"regexp"
 	"strconv"
 	"strings"
-)
 
+	"github.com/anicoll/gosungrow/pkg/only"
+)
 
 // @TODO - Consider standardizing points to a known format.
 // @TODO - queryUserCurveTemplateData is a good example of the structure.
@@ -26,23 +26,21 @@ import (
 //	Unit       valueTypes.String  `json:"unit"`
 // }
 
-
 type PsKey struct {
-	string     `json:"string,omitempty"`
+	string `json:"string,omitempty"`
 
 	PsId       string `json:"ps_id"`
 	DeviceType string `json:"device_type"`
 	DeviceCode string `json:"device_code"`
 	ChannelId  string `json:"channel_id"`
 
-	Valid      bool   `json:"-"`
-	Error      error  `json:"-"`
+	Valid bool  `json:"-"`
+	Error error `json:"-"`
 }
 
 // UnmarshalJSON - Convert JSON to value
 func (t *PsKey) UnmarshalJSON(data []byte) error {
-
-	for range Only.Once {
+	for range only.Once {
 		t.Valid = false
 
 		if len(data) == 0 {
@@ -64,7 +62,7 @@ func (t *PsKey) UnmarshalJSON(data []byte) error {
 func (t PsKey) MarshalJSON() ([]byte, error) {
 	var data []byte
 
-	for range Only.Once {
+	for range only.Once {
 		t.Valid = false
 
 		data, t.Error = json.Marshal(t.string)
@@ -106,7 +104,7 @@ func (t *PsKey) PsKey() string {
 }
 
 func (t *PsKey) SetValue(value string) PsKey {
-	for range Only.Once {
+	for range only.Once {
 		t.string = value
 		t.DeviceType = ""
 		t.DeviceCode = ""
@@ -116,26 +114,26 @@ func (t *PsKey) SetValue(value string) PsKey {
 
 		s := strings.Split(value, "_")
 		switch {
-			case len(s) == 1:
-				t.PsId = s[0]
-				t.Valid = true
-			case len(s) == 2:
-				t.PsId = s[0]
-				t.DeviceType = s[1]
-				t.Valid = true
-			case len(s) == 3:
-				t.PsId = s[0]
-				t.DeviceType = s[1]
-				t.DeviceCode = s[2]
-				t.Valid = true
-			case len(s) >= 4:
-				t.PsId = s[0]
-				t.DeviceType = s[1]
-				t.DeviceCode = s[2]
-				t.ChannelId = s[3]
-				t.Valid = true
-			default:
-				t.Error = errors.New("invalid ps_key")
+		case len(s) == 1:
+			t.PsId = s[0]
+			t.Valid = true
+		case len(s) == 2:
+			t.PsId = s[0]
+			t.DeviceType = s[1]
+			t.Valid = true
+		case len(s) == 3:
+			t.PsId = s[0]
+			t.DeviceType = s[1]
+			t.DeviceCode = s[2]
+			t.Valid = true
+		case len(s) >= 4:
+			t.PsId = s[0]
+			t.DeviceType = s[1]
+			t.DeviceCode = s[2]
+			t.ChannelId = s[3]
+			t.Valid = true
+		default:
+			t.Error = errors.New("invalid ps_key")
 		}
 	}
 
@@ -163,7 +161,6 @@ func SetPsKeyString(value string) PsKey {
 	return t.SetValue(value)
 }
 
-
 type PsId struct {
 	string `json:"string,omitempty"`
 	int64  `json:"integer,omitempty"`
@@ -173,7 +170,7 @@ type PsId struct {
 
 // UnmarshalJSON - Convert JSON to value
 func (t *PsId) UnmarshalJSON(data []byte) error {
-	for range Only.Once {
+	for range only.Once {
 		t.Valid = false
 
 		if len(data) == 0 {
@@ -203,7 +200,7 @@ func (t *PsId) UnmarshalJSON(data []byte) error {
 // MarshalJSON - Convert value to JSON
 func (t PsId) MarshalJSON() ([]byte, error) {
 	var data []byte
-	for range Only.Once {
+	for range only.Once {
 		t.Valid = false
 
 		data, t.Error = json.Marshal(t.int64)
@@ -233,7 +230,7 @@ func (t PsId) Match(comp int64) bool {
 }
 
 func (t *PsId) SetString(value string) PsId {
-	for range Only.Once {
+	for range only.Once {
 		t.string = value
 		t.int64 = 0
 		t.Valid = false
@@ -260,7 +257,7 @@ func (t *PsId) SetString(value string) PsId {
 }
 
 func (t *PsId) SetValue(value int64) PsId {
-	for range Only.Once {
+	for range only.Once {
 		t.string = ""
 		t.int64 = value
 		t.Valid = true
@@ -269,7 +266,6 @@ func (t *PsId) SetValue(value int64) PsId {
 
 	return *t
 }
-
 
 func SetPsIdString(value string) PsId {
 	var t PsId
@@ -283,7 +279,7 @@ func SetPsIdValue(value int64) PsId {
 
 func SetPsIdStrings(values []string) PsIds {
 	var t PsIds
-	for range Only.Once {
+	for range only.Once {
 		// sgd.PsId = valueTypes.SetPsIdString(PsId)
 		for _, pids := range values {
 			if pids == "" {
@@ -297,7 +293,7 @@ func SetPsIdStrings(values []string) PsIds {
 
 func SetPsIdValues(values []int64) PsIds {
 	var t PsIds
-	for range Only.Once {
+	for range only.Once {
 		// sgd.PsId = valueTypes.SetPsIdString(PsId)
 		for _, pids := range values {
 			if pids == 0 {
@@ -309,13 +305,12 @@ func SetPsIdValues(values []int64) PsIds {
 	return t
 }
 
-
 type PsIds []PsId
 
 func (t PsIds) String() string {
 	var ret string
 	for _, pid := range t {
-		ret += pid.String() +"\n"
+		ret += pid.String() + "\n"
 	}
 	return ret
 }
@@ -328,22 +323,21 @@ func (t *PsIds) Strings() []string {
 	return ret
 }
 
-
 type PointId struct {
 	// string `json:"string,omitempty"`
 	// int64  `json:"integer,omitempty"`
 	// isInt  bool
 
-	Point     string `json:"point"`
-	PsKey     PsKey `json:"ps_key"`
+	Point string `json:"point"`
+	PsKey PsKey  `json:"ps_key"`
 
-	Valid  bool `json:"valid"`
-	Error  error `json:"-"`
+	Valid bool  `json:"valid"`
+	Error error `json:"-"`
 }
 
 // UnmarshalJSON - Convert JSON to value
 func (t *PointId) UnmarshalJSON(data []byte) error {
-	for range Only.Once {
+	for range only.Once {
 		t.Valid = false
 
 		if len(data) == 0 {
@@ -362,7 +356,7 @@ func (t *PointId) UnmarshalJSON(data []byte) error {
 		}
 
 		var ds string
-		t.Error = json.Unmarshal([]byte(`"` + pid + `"`), &ds)
+		t.Error = json.Unmarshal([]byte(`"`+pid+`"`), &ds)
 		if t.Error == nil {
 			t.Set(ds)
 			break
@@ -378,7 +372,7 @@ func (t *PointId) UnmarshalJSON(data []byte) error {
 func (t PointId) MarshalJSON() ([]byte, error) {
 	var data []byte
 
-	for range Only.Once {
+	for range only.Once {
 		t.Error = nil
 		if t.PsKey.String() != "" {
 			d := fmt.Sprintf(`"%s.%s"`, t.PsKey.String(), t.Point)
@@ -397,7 +391,7 @@ func (t PointId) String() string {
 
 func (t *PointId) Full() string {
 	var ret string
-	for range Only.Once {
+	for range only.Once {
 		if t.PsKey.String() != "" {
 			ret = fmt.Sprintf(`%s.%s`, t.PsKey.String(), t.Point)
 			break
@@ -408,7 +402,7 @@ func (t *PointId) Full() string {
 }
 
 func (t *PointId) Set(values ...string) PointId {
-	for range Only.Once {
+	for range only.Once {
 		t.PsKey = PsKey{}
 		t.Point = ""
 		t.Valid = false
@@ -430,14 +424,14 @@ func (t *PointId) Set(values ...string) PointId {
 
 		a := strings.Split(value, ".")
 		switch {
-			case len(a) == 0:
-			case len(a) == 1:
-				t.Point = a[0]
-				t.Valid = true
-			case len(a) >= 2:
-				t.PsKey.SetValue(a[0])
-				t.Point = a[1]
-				t.Valid = true
+		case len(a) == 0:
+		case len(a) == 1:
+			t.Point = a[0]
+			t.Valid = true
+		case len(a) >= 2:
+			t.PsKey.SetValue(a[0])
+			t.Point = a[1]
+			t.Valid = true
 		}
 	}
 
@@ -445,7 +439,7 @@ func (t *PointId) Set(values ...string) PointId {
 }
 
 // func (t *PointId) SetValue(value int64) PointId {
-// 	for range Only.Once {
+// 	for range only.Once {
 // 		t.string = ""
 // 		t.int64 = value
 // 		t.Valid = true
@@ -457,7 +451,7 @@ func (t *PointId) Set(values ...string) PointId {
 // }
 
 // func (t *PointId) Fix() PointId {
-// 	for range Only.Once {
+// 	for range only.Once {
 // 		p := strings.TrimPrefix(t.string, "p")
 // 		_, t.Error = strconv.ParseInt(p, 10, 64)
 // 		if t.Error != nil {
@@ -509,7 +503,6 @@ func PointToName(ret string) string {
 	return ret
 }
 
-
 func SetPointIdString(value ...string) PointId {
 	var t PointId
 	return t.Set(value...)
@@ -520,17 +513,16 @@ func SetPointIdString(value ...string) PointId {
 // 	return t.SetValue(value)
 // }
 
-
 type PsKeys struct {
 	PsKeys []PsKey `json:"ps_keys,omitempty"`
 
-	Valid  bool `json:"valid"`
-	Error  error `json:"-"`
+	Valid bool  `json:"valid"`
+	Error error `json:"-"`
 }
 
 // UnmarshalJSON - Convert JSON to value
 func (t *PsKeys) UnmarshalJSON(data []byte) error {
-	for range Only.Once {
+	for range only.Once {
 		t.Valid = false
 
 		if len(data) == 0 {
@@ -648,17 +640,16 @@ func SetPsKeysString(values string) PsKeys {
 	return t
 }
 
-
 type PointIds struct {
 	PointIds []PointId `json:"points,omitempty"`
 
-	Valid  bool `json:"valid"`
-	Error  error `json:"-"`
+	Valid bool  `json:"valid"`
+	Error error `json:"-"`
 }
 
 // UnmarshalJSON - Convert JSON to value
 func (t *PointIds) UnmarshalJSON(data []byte) error {
-	for range Only.Once {
+	for range only.Once {
 		t.Valid = false
 
 		if len(data) == 0 {

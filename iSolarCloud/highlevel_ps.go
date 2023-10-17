@@ -1,64 +1,64 @@
 package iSolarCloud
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/findPsType"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getChnnlListByPsId"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getDeviceList"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getHouseholdStoragePsReport"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getIncomeSettingInfos"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPListinfoFromMysql"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPowerChargeSettingInfo"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPowerStationBasicInfo"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPowerStationData"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPowerStationForHousehold"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPowerStationInfo"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPowerStatistics"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPsDetail"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPsDetailForSinglePage"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPsDetailWithPsType"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPsHealthState"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPsInstallerByPsId"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPsInstallerOrgInfoByPsId"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPsList"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPsWeatherList"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getRemoteUpgradeTaskList"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getReportData"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/psForcastInfo"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/psHourPointsValue"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/queryAllPsIdAndName"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/queryDeviceListForApp"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/queryPowerStationInfo"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/queryPsIdList"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/queryPsProfit"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/queryPsStructureList"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/querySysAdvancedParam"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/reportList"
-	"github.com/MickMake/GoSungrow/iSolarCloud/Common"
-	"github.com/MickMake/GoSungrow/iSolarCloud/MttvScreenService/getPsDeviceListValue"
-	"github.com/MickMake/GoSungrow/iSolarCloud/MttvScreenService/getPsKpiForHoursByPsId"
-	"github.com/MickMake/GoSungrow/iSolarCloud/WebAppService/getDevicePointAttrs"
-	"github.com/MickMake/GoSungrow/iSolarCloud/WebAppService/getPsIdState"
-	"github.com/MickMake/GoSungrow/iSolarCloud/WebAppService/getReportPsTree"
-	"github.com/MickMake/GoSungrow/iSolarCloud/WebAppService/showPSView"
-	"github.com/MickMake/GoSungrow/iSolarCloud/WebIscmAppService/getMaxDeviceIdByPsId"
-	"github.com/MickMake/GoSungrow/iSolarCloud/WebIscmAppService/getPsTreeMenu"
-	"github.com/MickMake/GoSungrow/iSolarCloud/WebIscmAppService/queryDeviceListForBackSys"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
-	datatable "go.pennock.tech/tabular/auto"
 	"os"
 	"sort"
 	"strings"
 	"time"
-)
 
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/findPsType"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getChnnlListByPsId"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getDeviceList"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getHouseholdStoragePsReport"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getIncomeSettingInfos"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPListinfoFromMysql"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPowerChargeSettingInfo"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPowerStationBasicInfo"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPowerStationData"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPowerStationForHousehold"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPowerStationInfo"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPowerStatistics"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPsDetail"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPsDetailForSinglePage"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPsDetailWithPsType"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPsHealthState"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPsInstallerByPsId"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPsInstallerOrgInfoByPsId"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPsList"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPsWeatherList"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getRemoteUpgradeTaskList"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getReportData"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/psForcastInfo"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/psHourPointsValue"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/queryAllPsIdAndName"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/queryDeviceListForApp"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/queryPowerStationInfo"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/queryPsIdList"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/queryPsProfit"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/queryPsStructureList"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/querySysAdvancedParam"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/reportList"
+	"github.com/anicoll/gosungrow/iSolarCloud/Common"
+	"github.com/anicoll/gosungrow/iSolarCloud/MttvScreenService/getPsDeviceListValue"
+	"github.com/anicoll/gosungrow/iSolarCloud/MttvScreenService/getPsKpiForHoursByPsId"
+	"github.com/anicoll/gosungrow/iSolarCloud/WebAppService/getDevicePointAttrs"
+	"github.com/anicoll/gosungrow/iSolarCloud/WebAppService/getPsIdState"
+	"github.com/anicoll/gosungrow/iSolarCloud/WebAppService/getReportPsTree"
+	"github.com/anicoll/gosungrow/iSolarCloud/WebAppService/showPSView"
+	"github.com/anicoll/gosungrow/iSolarCloud/WebIscmAppService/getMaxDeviceIdByPsId"
+	"github.com/anicoll/gosungrow/iSolarCloud/WebIscmAppService/getPsTreeMenu"
+	"github.com/anicoll/gosungrow/iSolarCloud/WebIscmAppService/queryDeviceListForBackSys"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+	"github.com/anicoll/gosungrow/pkg/only"
+	datatable "go.pennock.tech/tabular/auto"
+)
 
 // PsList - Return all ps_ids.
 func (sg *SunGrow) PsList(psIds ...string) (string, error) {
 	var ret string
 
-	for range Only.Once {
+	for range only.Once {
 		var devices getDeviceList.Devices
 		devices, sg.Error = sg.GetDeviceList()
 		if sg.Error != nil {
@@ -85,7 +85,7 @@ func (sg *SunGrow) PsList(psIds ...string) (string, error) {
 func (sg *SunGrow) PsPoints(psIds []string, deviceType string) (string, error) {
 	var ret string
 
-	for range Only.Once {
+	for range only.Once {
 		var points getDevicePointAttrs.Points
 		points, sg.Error = sg.DevicePointAttrs(deviceType, psIds...)
 		if sg.Error != nil {
@@ -176,7 +176,7 @@ func (sg *SunGrow) PsPoints(psIds []string, deviceType string) (string, error) {
 
 func IsInArray(find string, array ...string) bool {
 	var yes bool
-	for range Only.Once {
+	for range only.Once {
 		if len(array) == 0 {
 			yes = true
 			break
@@ -198,7 +198,7 @@ func IsInArray(find string, array ...string) bool {
 
 // PsPointsData - Return all points associated with psIds and device_type filter.
 func (sg *SunGrow) PsPointsData(psIds []string, deviceType string, startDate string, endDate string, interval string) error {
-	for range Only.Once {
+	for range only.Once {
 		var tp []string
 		for _, i := range psIds {
 			if i != "" {
@@ -246,7 +246,7 @@ func (sg *SunGrow) PsPointsData(psIds []string, deviceType string, startDate str
 
 // PsPointsDataSave - Return all points associated with psIds and device_type filter and save to files.
 func (sg *SunGrow) PsPointsDataSave(psIds []string, deviceType string, startDate string, endDate string, interval string) error {
-	for range Only.Once {
+	for range only.Once {
 		var pskeys valueTypes.PsKeys
 		pskeys, sg.Error = sg.GetPsKeys()
 		if sg.Error != nil {
@@ -278,11 +278,10 @@ func (sg *SunGrow) PsPointsDataSave(psIds []string, deviceType string, startDate
 	return sg.Error
 }
 
-
 func (sg *SunGrow) GetPsKeys() (valueTypes.PsKeys, error) {
 	var ret valueTypes.PsKeys
 
-	for range Only.Once {
+	for range only.Once {
 		//        PsKey                   valueTypes.PsKey   `json:"ps_key" PointId:"ps_key" PointUpdateFreq:"UpdateFreqBoot"`
 		//        PsId                    valueTypes.PsId    `json:"ps_id" PointId:"ps_id" PointUpdateFreq:"UpdateFreqBoot"`
 		//        DeviceType              valueTypes.Integer `json:"device_type" PointId:"device_type" PointUpdateFreq:"UpdateFreqBoot"`
@@ -295,7 +294,6 @@ func (sg *SunGrow) GetPsKeys() (valueTypes.PsKeys, error) {
 		// AppService.queryDeviceInfoForApp DeviceSn:B2281302388 - Needs UUID.
 		// getDeviceList - Doesn't return the parent device.
 
-
 		// -------------------------------------------------------------------------------- //
 		// Method 1: WebIscmAppService.queryDeviceListForBackSys - Missing values.
 		// pids := sg.GetDevices()
@@ -306,7 +304,6 @@ func (sg *SunGrow) GetPsKeys() (valueTypes.PsKeys, error) {
 		// for _, pid := range pids {
 		// 	fmt.Printf("%s_%s_%s_%s\n", "UUID", pid.DeviceType, pid.DeviceCode, pid.ChannelId)
 		// }
-
 
 		// -------------------------------------------------------------------------------- //
 		// Method 2: PsTreeMenu
@@ -326,7 +323,6 @@ func (sg *SunGrow) GetPsKeys() (valueTypes.PsKeys, error) {
 			break
 		}
 
-
 		// -------------------------------------------------------------------------------- //
 		// Method 3: AppService.getDeviceList - Around 7kB
 		pids2, _ := sg.GetDeviceList()
@@ -341,7 +337,6 @@ func (sg *SunGrow) GetPsKeys() (valueTypes.PsKeys, error) {
 			ret.Set(pskeys...)
 			break
 		}
-
 
 		// -------------------------------------------------------------------------------- //
 		// Method 4: AppService.getPsList - Around 8.5kB - Doesn't return any pid.DeviceType, pid.DeviceCode, pid.ChannelId
@@ -359,7 +354,6 @@ func (sg *SunGrow) GetPsKeys() (valueTypes.PsKeys, error) {
 		// 	ret.Set(pskeys...)
 		// 	break
 		// }
-
 
 		// -------------------------------------------------------------------------------- //
 		// Method 5: AppService.queryDeviceList - Around 118kB
@@ -382,7 +376,7 @@ func (sg *SunGrow) GetPsKeys() (valueTypes.PsKeys, error) {
 
 func (sg *SunGrow) GetDevices() []queryDeviceListForBackSys.Device {
 	var ret []queryDeviceListForBackSys.Device
-	for range Only.Once {
+	for range only.Once {
 		var pids valueTypes.PsIds
 		pids, sg.Error = sg.GetPsIds()
 		if sg.Error != nil {
@@ -404,7 +398,7 @@ func (sg *SunGrow) GetDevices() []queryDeviceListForBackSys.Device {
 
 func (sg *SunGrow) SetPsIds(args ...string) valueTypes.PsIds {
 	var pids valueTypes.PsIds
-	for range Only.Once {
+	for range only.Once {
 		if len(args) > 0 {
 			pids = valueTypes.SetPsIdStrings(args)
 			if len(pids) > 0 {
@@ -423,7 +417,7 @@ func (sg *SunGrow) SetPsIds(args ...string) valueTypes.PsIds {
 func (sg *SunGrow) GetPsIds() (valueTypes.PsIds, error) {
 	var ret valueTypes.PsIds
 
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPsList.EndPointName, nil, DefaultCacheTimeout)
 		if sg.IsError() {
 			break
@@ -439,7 +433,7 @@ func (sg *SunGrow) GetPsIds() (valueTypes.PsIds, error) {
 // func (sg *SunGrow) GetPsKeys() ([]string, error) {
 // 	var ret []string
 //
-// 	for range Only.Once {
+// 	for range only.Once {
 // 		var psIds valueTypes.PsIds
 // 		psIds, sg.Error = sg.GetPsIds()
 // 		if sg.Error != nil {
@@ -466,7 +460,7 @@ func (sg *SunGrow) GetPsIds() (valueTypes.PsIds, error) {
 // func (sg *SunGrow) GetPsId() (valueTypes.PsId, error) {
 // 	var ret valueTypes.PsId
 //
-// 	for range Only.Once {
+// 	for range only.Once {
 //
 // 		ep := sg.GetByStruct(getPsList.EndPointName, nil, DefaultCacheTimeout)
 // 		if sg.IsError() {
@@ -485,12 +479,11 @@ func (sg *SunGrow) GetPsIds() (valueTypes.PsIds, error) {
 // 	return ret, sg.Error
 // }
 
-
 // PsTreeMenu - WebIscmAppService.getPsTreeMenu
 func (sg *SunGrow) PsTreeMenu(psIds ...string) (PsTrees, error) {
 	ret := make(PsTrees)
 
-	for range Only.Once {
+	for range only.Once {
 		pids := sg.SetPsIds(psIds...)
 		if sg.Error != nil {
 			break
@@ -517,6 +510,7 @@ func (sg *SunGrow) PsTreeMenu(psIds ...string) (PsTrees, error) {
 }
 
 const Root = "0"
+
 type Ps struct {
 	Children []getPsTreeMenu.Ps
 	Depth    int
@@ -536,7 +530,7 @@ func (p PsTree) String() string {
 
 func (p *PsTree) Root() *getPsTreeMenu.Ps {
 	var ret *getPsTreeMenu.Ps
-	for range Only.Once {
+	for range only.Once {
 		if _, ok := p.Map[Root]; !ok {
 			break
 		}
@@ -561,8 +555,8 @@ func (p *PsTree) Scan(devices []getPsTreeMenu.Ps, print bool) {
 
 		// fmt.Printf("[%s]\tParent:%s\tSelf: - %s\t%s\t%s\t%s\n", name, ps.UpUUID, ps.UUID, ps.PsId, ps.PsKey, ps.DeviceName)
 		if _, ok := p.Map[name]; !ok {
-			p.Map[name] = &Ps {
-				Children: []getPsTreeMenu.Ps{ ps},
+			p.Map[name] = &Ps{
+				Children: []getPsTreeMenu.Ps{ps},
 			}
 		} else {
 			p.Map[name].Children = append(p.Map[name].Children, ps)
@@ -585,7 +579,7 @@ func (p *PsTree) loop(current string, count int, depth int) {
 
 	for _, child := range p.Map[current].Children {
 		p.Stringer += fmt.Sprintf("%s\tPsId:%s\tPsName:%s\tPsKey:%s\tDeviceName:%s\tUuid:%s\n",
-			"+" + strings.Repeat("--", depth),
+			"+"+strings.Repeat("--", depth),
 			child.PsId, child.PsName,
 			child.PsKey, child.DeviceName, child.UUID)
 
@@ -595,7 +589,6 @@ func (p *PsTree) loop(current string, count int, depth int) {
 		depth--
 	}
 }
-
 
 type PsTrees map[string]PsTree
 
@@ -607,12 +600,11 @@ func (p PsTrees) String() string {
 	return ret
 }
 
-
 // QueryDeviceListForBackSys - WebIscmAppService.queryDeviceListForBackSys
 func (sg *SunGrow) QueryDeviceListForBackSys(psId string) ([]queryDeviceListForBackSys.Device, error) {
 	var ret []queryDeviceListForBackSys.Device
 
-	for range Only.Once {
+	for range only.Once {
 		pid := valueTypes.SetPsIdString(psId)
 		if !pid.Valid {
 			sg.Error = pid.Error
@@ -620,7 +612,7 @@ func (sg *SunGrow) QueryDeviceListForBackSys(psId string) ([]queryDeviceListForB
 		}
 
 		ep := sg.GetByStruct(queryDeviceListForBackSys.EndPointName,
-			queryDeviceListForBackSys.RequestData{ PsId: pid },
+			queryDeviceListForBackSys.RequestData{PsId: pid},
 			DefaultCacheTimeout)
 		if sg.IsError() {
 			break
@@ -636,7 +628,7 @@ func (sg *SunGrow) QueryDeviceListForBackSys(psId string) ([]queryDeviceListForB
 func (sg *SunGrow) GetPsList() ([]Common.Device, error) {
 	var ret []Common.Device
 
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPsList.EndPointName, nil, DefaultCacheTimeout)
 		if sg.IsError() {
 			break
@@ -652,13 +644,13 @@ func (sg *SunGrow) GetPsList() ([]Common.Device, error) {
 // QueryPowerStationInfo - AppService.queryPowerStationInfo
 func (sg *SunGrow) QueryPowerStationInfo(psId valueTypes.PsId, sn valueTypes.String) (queryPowerStationInfo.ResultData, error) {
 	var ret queryPowerStationInfo.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(queryPowerStationInfo.EndPointName,
-			queryPowerStationInfo.RequestData {
+			queryPowerStationInfo.RequestData{
 				PsId: psId,
-				Sn: sn,
+				Sn:   sn,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -673,10 +665,10 @@ func (sg *SunGrow) QueryPowerStationInfo(psId valueTypes.PsId, sn valueTypes.Str
 // QueryPsIdList - AppService.queryPsIdList
 func (sg *SunGrow) QueryPsIdList() ([]valueTypes.String, error) {
 	var ret []valueTypes.String
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(queryPsIdList.EndPointName,
-			queryPsIdList.RequestData {},
-			time.Hour * 24,
+			queryPsIdList.RequestData{},
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -691,12 +683,12 @@ func (sg *SunGrow) QueryPsIdList() ([]valueTypes.String, error) {
 // GetPsInstallerOrgInfoByPsId - AppService.getPsInstallerOrgInfoByPsId
 func (sg *SunGrow) GetPsInstallerOrgInfoByPsId(psId valueTypes.PsId) (getPsInstallerOrgInfoByPsId.ResultData, error) {
 	var ret getPsInstallerOrgInfoByPsId.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPsInstallerOrgInfoByPsId.EndPointName,
-			getPsInstallerOrgInfoByPsId.RequestData {
+			getPsInstallerOrgInfoByPsId.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -711,12 +703,12 @@ func (sg *SunGrow) GetPsInstallerOrgInfoByPsId(psId valueTypes.PsId) (getPsInsta
 // GetPListinfoFromMysql - AppService.getPListinfoFromMysql
 func (sg *SunGrow) GetPListinfoFromMysql(psIds valueTypes.PsIds) (getPListinfoFromMysql.ResultData, error) {
 	var ret getPListinfoFromMysql.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPListinfoFromMysql.EndPointName,
-			getPListinfoFromMysql.RequestData {
+			getPListinfoFromMysql.RequestData{
 				PsIds: psIds,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -731,10 +723,10 @@ func (sg *SunGrow) GetPListinfoFromMysql(psIds valueTypes.PsIds) (getPListinfoFr
 // QueryAllPsIdAndName - AppService.queryAllPsIdAndName
 func (sg *SunGrow) QueryAllPsIdAndName() (queryAllPsIdAndName.ResultData, error) {
 	var ret queryAllPsIdAndName.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(queryAllPsIdAndName.EndPointName,
-			queryAllPsIdAndName.RequestData {},
-			time.Hour * 24,
+			queryAllPsIdAndName.RequestData{},
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -749,13 +741,13 @@ func (sg *SunGrow) QueryAllPsIdAndName() (queryAllPsIdAndName.ResultData, error)
 // GetRemoteUpgradeTaskList - AppService.getRemoteUpgradeTaskList
 func (sg *SunGrow) getRemoteUpgradeTaskList(psId valueTypes.PsIds) (getRemoteUpgradeTaskList.ResultData, error) {
 	var ret getRemoteUpgradeTaskList.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(
 			"WebAppService.getRemoteUpgradeTaskList",
-			getRemoteUpgradeTaskList.RequestData {
+			getRemoteUpgradeTaskList.RequestData{
 				PsIdList: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -770,14 +762,14 @@ func (sg *SunGrow) getRemoteUpgradeTaskList(psId valueTypes.PsIds) (getRemoteUpg
 // QuerySysAdvancedParam - AppService.querySysAdvancedParam
 func (sg *SunGrow) QuerySysAdvancedParam(psId valueTypes.PsId, curPage valueTypes.Integer, size valueTypes.Integer) (querySysAdvancedParam.ResultData, error) {
 	var ret querySysAdvancedParam.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(querySysAdvancedParam.EndPointName,
-			querySysAdvancedParam.RequestData {
-				PsId2: psId,
+			querySysAdvancedParam.RequestData{
+				PsId2:   psId,
 				CurPage: curPage,
-				Size: size,
+				Size:    size,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -792,12 +784,12 @@ func (sg *SunGrow) QuerySysAdvancedParam(psId valueTypes.PsId, curPage valueType
 // GetPsInstallerByPsId - AppService.getPsInstallerByPsId
 func (sg *SunGrow) GetPsInstallerByPsId(psId valueTypes.PsId) (getPsInstallerByPsId.ResultData, error) {
 	var ret getPsInstallerByPsId.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPsInstallerByPsId.EndPointName,
 			getPsInstallerByPsId.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -812,12 +804,12 @@ func (sg *SunGrow) GetPsInstallerByPsId(psId valueTypes.PsId) (getPsInstallerByP
 // FindPsType - AppService.findPsType
 func (sg *SunGrow) FindPsType(psId valueTypes.PsId) (findPsType.ResultData, error) {
 	var ret findPsType.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(findPsType.EndPointName,
-			findPsType.RequestData {
+			findPsType.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -832,12 +824,12 @@ func (sg *SunGrow) FindPsType(psId valueTypes.PsId) (findPsType.ResultData, erro
 // GetChannelListByPsId - AppService.getChnnlListByPsId
 func (sg *SunGrow) GetChannelListByPsId(psId valueTypes.PsId) (getChnnlListByPsId.ResultData, error) {
 	var ret getChnnlListByPsId.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getChnnlListByPsId.EndPointName,
-			getChnnlListByPsId.RequestData {
+			getChnnlListByPsId.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -853,14 +845,14 @@ func (sg *SunGrow) GetChannelListByPsId(psId valueTypes.PsId) (getChnnlListByPsI
 // GetHouseholdStoragePsReport - AppService.getHouseholdStoragePsReport DateId:2022
 func (sg *SunGrow) GetHouseholdStoragePsReport(psId valueTypes.PsId, dateId valueTypes.DateTime) (getHouseholdStoragePsReport.ResultData, error) {
 	var ret getHouseholdStoragePsReport.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getHouseholdStoragePsReport.EndPointName,
-			getHouseholdStoragePsReport.RequestData {
-				PsId: psId,
-				DateId: dateId,
+			getHouseholdStoragePsReport.RequestData{
+				PsId:     psId,
+				DateId:   dateId,
 				DateType: valueTypes.SetStringValue(dateId.DateType),
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -876,12 +868,12 @@ func (sg *SunGrow) GetHouseholdStoragePsReport(psId valueTypes.PsId, dateId valu
 // GetIncomeSettingInfos - AppService.getIncomeSettingInfos
 func (sg *SunGrow) GetIncomeSettingInfos(psId valueTypes.PsId) (getIncomeSettingInfos.ResultData, error) {
 	var ret getIncomeSettingInfos.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getIncomeSettingInfos.EndPointName,
-			getIncomeSettingInfos.RequestData {
+			getIncomeSettingInfos.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -897,12 +889,12 @@ func (sg *SunGrow) GetIncomeSettingInfos(psId valueTypes.PsId) (getIncomeSetting
 // GetPowerChargeSettingInfo - AppService.getPowerChargeSettingInfo
 func (sg *SunGrow) GetPowerChargeSettingInfo(psId valueTypes.PsId) (getPowerChargeSettingInfo.ResultData, error) {
 	var ret getPowerChargeSettingInfo.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPowerChargeSettingInfo.EndPointName,
-			getPowerChargeSettingInfo.RequestData {
+			getPowerChargeSettingInfo.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -918,12 +910,12 @@ func (sg *SunGrow) GetPowerChargeSettingInfo(psId valueTypes.PsId) (getPowerChar
 // GetPowerStationBasicInfo - AppService.getPowerStationBasicInfo
 func (sg *SunGrow) GetPowerStationBasicInfo(psId valueTypes.PsId) (getPowerStationBasicInfo.ResultData, error) {
 	var ret getPowerStationBasicInfo.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPowerStationBasicInfo.EndPointName,
-			getPowerStationBasicInfo.RequestData {
+			getPowerStationBasicInfo.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -939,14 +931,14 @@ func (sg *SunGrow) GetPowerStationBasicInfo(psId valueTypes.PsId) (getPowerStati
 // GetPowerStationData - AppService.getPowerStationData DateId:2022
 func (sg *SunGrow) GetPowerStationData(psId valueTypes.PsId, dateId valueTypes.DateTime) (getPowerStationData.ResultData, error) {
 	var ret getPowerStationData.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPowerStationData.EndPointName,
-			getPowerStationData.RequestData {
-				PsId: psId,
-				DateId: dateId,
+			getPowerStationData.RequestData{
+				PsId:     psId,
+				DateId:   dateId,
 				DateType: valueTypes.SetStringValue(dateId.DateType),
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -962,12 +954,12 @@ func (sg *SunGrow) GetPowerStationData(psId valueTypes.PsId, dateId valueTypes.D
 // GetPowerStationForHousehold - AppService.getPowerStationForHousehold
 func (sg *SunGrow) GetPowerStationForHousehold(psId valueTypes.PsId) (getPowerStationForHousehold.ResultData, error) {
 	var ret getPowerStationForHousehold.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPowerStationForHousehold.EndPointName,
-			getPowerStationForHousehold.RequestData {
+			getPowerStationForHousehold.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -983,12 +975,12 @@ func (sg *SunGrow) GetPowerStationForHousehold(psId valueTypes.PsId) (getPowerSt
 // GetPowerStationInfo - AppService.getPowerStationInfo
 func (sg *SunGrow) GetPowerStationInfo(psId valueTypes.PsId) (getPowerStationInfo.ResultData, error) {
 	var ret getPowerStationInfo.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPowerStationInfo.EndPointName,
-			getPowerStationInfo.RequestData {
+			getPowerStationInfo.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1004,12 +996,12 @@ func (sg *SunGrow) GetPowerStationInfo(psId valueTypes.PsId) (getPowerStationInf
 // GetPowerStatistics - AppService.getPowerStatistics
 func (sg *SunGrow) GetPowerStatistics(psId valueTypes.PsId) (getPowerStatistics.ResultData, error) {
 	var ret getPowerStatistics.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPowerStatistics.EndPointName,
-			getPowerStatistics.RequestData {
+			getPowerStatistics.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1025,12 +1017,12 @@ func (sg *SunGrow) GetPowerStatistics(psId valueTypes.PsId) (getPowerStatistics.
 // GetPsDetail - AppService.getPsDetail
 func (sg *SunGrow) GetPsDetail(psId valueTypes.PsId) (getPsDetail.ResultData, error) {
 	var ret getPsDetail.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPsDetail.EndPointName,
-			getPsDetail.RequestData {
+			getPsDetail.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1046,12 +1038,12 @@ func (sg *SunGrow) GetPsDetail(psId valueTypes.PsId) (getPsDetail.ResultData, er
 // GetPsDetailForSinglePage - AppService.getPsDetailForSinglePage
 func (sg *SunGrow) GetPsDetailForSinglePage(psId valueTypes.PsId) (getPsDetailForSinglePage.ResultData, error) {
 	var ret getPsDetailForSinglePage.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPsDetailForSinglePage.EndPointName,
-			getPsDetailForSinglePage.RequestData {
+			getPsDetailForSinglePage.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1067,12 +1059,12 @@ func (sg *SunGrow) GetPsDetailForSinglePage(psId valueTypes.PsId) (getPsDetailFo
 // GetPsDetailWithPsType - AppService.getPsDetailWithPsType
 func (sg *SunGrow) GetPsDetailWithPsType(psId valueTypes.PsId) (getPsDetailWithPsType.ResultData, error) {
 	var ret getPsDetailWithPsType.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPsDetailWithPsType.EndPointName,
-			getPsDetailWithPsType.RequestData {
+			getPsDetailWithPsType.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1088,12 +1080,12 @@ func (sg *SunGrow) GetPsDetailWithPsType(psId valueTypes.PsId) (getPsDetailWithP
 // GetPsHealthState - AppService.getPsHealthState
 func (sg *SunGrow) GetPsHealthState(psId valueTypes.PsId) (getPsHealthState.ResultData, error) {
 	var ret getPsHealthState.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPsHealthState.EndPointName,
-			getPsHealthState.RequestData {
+			getPsHealthState.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1109,12 +1101,12 @@ func (sg *SunGrow) GetPsHealthState(psId valueTypes.PsId) (getPsHealthState.Resu
 // GetPsWeatherList - AppService.getPsWeatherList
 func (sg *SunGrow) GetPsWeatherList(psId valueTypes.PsId) (getPsWeatherList.ResultData, error) {
 	var ret getPsWeatherList.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPsWeatherList.EndPointName,
-			getPsWeatherList.RequestData {
+			getPsWeatherList.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1130,13 +1122,13 @@ func (sg *SunGrow) GetPsWeatherList(psId valueTypes.PsId) (getPsWeatherList.Resu
 // GetReportData - AppService.getReportData ReportType:1
 func (sg *SunGrow) GetReportData(psId valueTypes.PsId, reportType int64) (getReportData.ResultData, error) {
 	var ret getReportData.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getReportData.EndPointName,
-			getReportData.RequestData {
-				PsId: psId,
+			getReportData.RequestData{
+				PsId:       psId,
 				ReportType: valueTypes.SetIntegerValue(reportType),
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1152,12 +1144,12 @@ func (sg *SunGrow) GetReportData(psId valueTypes.PsId, reportType int64) (getRep
 // GetPsForecastInfo - AppService.psForcastInfo
 func (sg *SunGrow) GetPsForecastInfo(psId valueTypes.PsId) (psForcastInfo.ResultData, error) {
 	var ret psForcastInfo.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(psForcastInfo.EndPointName,
-			psForcastInfo.RequestData {
+			psForcastInfo.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1173,12 +1165,12 @@ func (sg *SunGrow) GetPsForecastInfo(psId valueTypes.PsId) (psForcastInfo.Result
 // GetPsHourPointsValue - AppService.psHourPointsValue
 func (sg *SunGrow) GetPsHourPointsValue(psId valueTypes.PsId) (psHourPointsValue.ResultData, error) {
 	var ret psHourPointsValue.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(psHourPointsValue.EndPointName,
-			psHourPointsValue.RequestData {
+			psHourPointsValue.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1194,12 +1186,12 @@ func (sg *SunGrow) GetPsHourPointsValue(psId valueTypes.PsId) (psHourPointsValue
 // QueryDeviceListForApp - AppService.queryDeviceListForApp
 func (sg *SunGrow) QueryDeviceListForApp(psId valueTypes.PsId) (queryDeviceListForApp.ResultData, error) {
 	var ret queryDeviceListForApp.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(queryDeviceListForApp.EndPointName,
-			queryDeviceListForApp.RequestData {
+			queryDeviceListForApp.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1215,14 +1207,14 @@ func (sg *SunGrow) QueryDeviceListForApp(psId valueTypes.PsId) (queryDeviceListF
 // QueryPsProfit - AppService.queryPsProfit DateId:2022
 func (sg *SunGrow) QueryPsProfit(psId valueTypes.PsId, dateId valueTypes.DateTime) (queryPsProfit.ResultData, error) {
 	var ret queryPsProfit.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(queryPsProfit.EndPointName,
-			queryPsProfit.RequestData {
-				PsId: psId,
-				DateId: dateId,
+			queryPsProfit.RequestData{
+				PsId:     psId,
+				DateId:   dateId,
 				DateType: valueTypes.SetStringValue(dateId.DateType),
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1238,12 +1230,12 @@ func (sg *SunGrow) QueryPsProfit(psId valueTypes.PsId, dateId valueTypes.DateTim
 // QueryPsStructureList - AppService.queryPsStructureList
 func (sg *SunGrow) QueryPsStructureList(psId valueTypes.PsId) (queryPsStructureList.ResultData, error) {
 	var ret queryPsStructureList.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(queryPsStructureList.EndPointName,
-			queryPsStructureList.RequestData {
+			queryPsStructureList.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1259,13 +1251,13 @@ func (sg *SunGrow) QueryPsStructureList(psId valueTypes.PsId) (queryPsStructureL
 // ReportList - AppService.reportList ReportType:1
 func (sg *SunGrow) ReportList(psId valueTypes.PsId, reportType int64) (reportList.ResultData, error) {
 	var ret reportList.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(reportList.EndPointName,
-			reportList.RequestData {
-				PsId: psId,
+			reportList.RequestData{
+				PsId:       psId,
 				ReportType: valueTypes.SetIntegerValue(reportType),
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1281,12 +1273,12 @@ func (sg *SunGrow) ReportList(psId valueTypes.PsId, reportType int64) (reportLis
 // GetPsDeviceListValue - MttvScreenService.getPsDeviceListValue
 func (sg *SunGrow) GetPsDeviceListValue(psId valueTypes.PsId) (getPsDeviceListValue.ResultData, error) {
 	var ret getPsDeviceListValue.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPsDeviceListValue.EndPointName,
-			getPsDeviceListValue.RequestData {
+			getPsDeviceListValue.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1302,12 +1294,12 @@ func (sg *SunGrow) GetPsDeviceListValue(psId valueTypes.PsId) (getPsDeviceListVa
 // GetPsKpiForHoursByPsId - MttvScreenService.getPsKpiForHoursByPsId Day:20221002
 func (sg *SunGrow) GetPsKpiForHoursByPsId(psId valueTypes.PsId) (getPsKpiForHoursByPsId.ResultData, error) {
 	var ret getPsKpiForHoursByPsId.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPsKpiForHoursByPsId.EndPointName,
-			getPsKpiForHoursByPsId.RequestData {
+			getPsKpiForHoursByPsId.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1323,12 +1315,12 @@ func (sg *SunGrow) GetPsKpiForHoursByPsId(psId valueTypes.PsId) (getPsKpiForHour
 // GetPsIdState - WebAppService.getPsIdState
 func (sg *SunGrow) GetPsIdState(psId valueTypes.PsId) (getPsIdState.ResultData, error) {
 	var ret getPsIdState.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPsIdState.EndPointName,
-			getPsIdState.RequestData {
+			getPsIdState.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1344,12 +1336,12 @@ func (sg *SunGrow) GetPsIdState(psId valueTypes.PsId) (getPsIdState.ResultData, 
 // GetReportPsTree - WebAppService.getReportPsTree DeviceType:14
 func (sg *SunGrow) GetReportPsTree(psId valueTypes.PsId) (getReportPsTree.ResultData, error) {
 	var ret getReportPsTree.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getReportPsTree.EndPointName,
-			getReportPsTree.RequestData {
+			getReportPsTree.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1365,12 +1357,12 @@ func (sg *SunGrow) GetReportPsTree(psId valueTypes.PsId) (getReportPsTree.Result
 // ShowPSView - WebAppService.showPSView
 func (sg *SunGrow) ShowPSView(psId valueTypes.PsId) (showPSView.ResultData, error) {
 	var ret showPSView.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(showPSView.EndPointName,
-			showPSView.RequestData {
+			showPSView.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1386,12 +1378,12 @@ func (sg *SunGrow) ShowPSView(psId valueTypes.PsId) (showPSView.ResultData, erro
 // GetMaxDeviceIdByPsId - WebIscmAppService.getMaxDeviceIdByPsId
 func (sg *SunGrow) GetMaxDeviceIdByPsId(psId valueTypes.PsId) (getMaxDeviceIdByPsId.ResultData, error) {
 	var ret getMaxDeviceIdByPsId.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getMaxDeviceIdByPsId.EndPointName,
-			getMaxDeviceIdByPsId.RequestData {
+			getMaxDeviceIdByPsId.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1407,12 +1399,12 @@ func (sg *SunGrow) GetMaxDeviceIdByPsId(psId valueTypes.PsId) (getMaxDeviceIdByP
 // GetPsTreeMenu - WebIscmAppService.getPsTreeMenu
 func (sg *SunGrow) GetPsTreeMenu(psId valueTypes.PsId) (getPsTreeMenu.ResultData, error) {
 	var ret getPsTreeMenu.ResultData
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPsTreeMenu.EndPointName,
-			getPsTreeMenu.RequestData {
+			getPsTreeMenu.RequestData{
 				PsId: psId,
 			},
-			time.Hour * 24,
+			time.Hour*24,
 		)
 		if sg.IsError() {
 			break
@@ -1425,11 +1417,10 @@ func (sg *SunGrow) GetPsTreeMenu(psId valueTypes.PsId) (getPsTreeMenu.ResultData
 	return ret, sg.Error
 }
 
-
 // // getRobotDynamicCleaningView - AppService.getRobotDynamicCleaningView
 // func (sg *SunGrow) getRobotDynamicCleaningView(psId valueTypes.PsId) (getRobotDynamicCleaningView.ResultData, error) {
 // 	var ret getRobotDynamicCleaningView.ResultData
-// 	for range Only.Once {
+// 	for range only.Once {
 // 	}
 // 	return ret, sg.Error
 // }
@@ -1437,7 +1428,7 @@ func (sg *SunGrow) GetPsTreeMenu(psId valueTypes.PsId) (getPsTreeMenu.ResultData
 // // GetPowerRobotSweepAttrByPsId - AppService.getPowerRobotSweepAttrByPsId
 // func (sg *SunGrow) GetPowerRobotSweepAttrByPsId(psId valueTypes.PsId) (getPowerRobotSweepAttrByPsId.ResultData, error) {
 // 	var ret getPowerRobotSweepAttrByPsId.ResultData
-// 	for range Only.Once {
+// 	for range only.Once {
 // 	}
 // 	return ret, sg.Error
 // }
@@ -1445,7 +1436,7 @@ func (sg *SunGrow) GetPsTreeMenu(psId valueTypes.PsId) (getPsTreeMenu.ResultData
 // // FindEnvironmentInfo - AppService.findEnvironmentInfo
 // func (sg *SunGrow) FindEnvironmentInfo(psId valueTypes.PsId) (findEnvironmentInfo.ResultData, error) {
 // 	var ret findEnvironmentInfo.ResultData
-// 	for range Only.Once {
+// 	for range only.Once {
 // 	}
 // 	return ret, sg.Error
 // }
@@ -1453,7 +1444,7 @@ func (sg *SunGrow) GetPsTreeMenu(psId valueTypes.PsId) (getPsTreeMenu.ResultData
 // // GetAllDeviceByPsId - AppService.getAllDeviceByPsId
 // func (sg *SunGrow) GetAllDeviceByPsId(psId valueTypes.PsId) (getAllDeviceByPsId.ResultData, error) {
 // 	var ret getAllDeviceByPsId.ResultData
-// 	for range Only.Once {
+// 	for range only.Once {
 // 	}
 // 	return ret, sg.Error
 // }
@@ -1461,7 +1452,7 @@ func (sg *SunGrow) GetPsTreeMenu(psId valueTypes.PsId) (getPsTreeMenu.ResultData
 // // GetAllPowerRobotViewInfoByPsId - AppService.getAllPowerRobotViewInfoByPsId
 // func (sg *SunGrow) GetAllPowerRobotViewInfoByPsId(psId valueTypes.PsId) (getAllPowerRobotViewInfoByPsId.ResultData, error) {
 // 	var ret getAllPowerRobotViewInfoByPsId.ResultData
-// 	for range Only.Once {
+// 	for range only.Once {
 // 	}
 // 	return ret, sg.Error
 // }
@@ -1469,7 +1460,7 @@ func (sg *SunGrow) GetPsTreeMenu(psId valueTypes.PsId) (getPsTreeMenu.ResultData
 // // QueryPsNameByPsId - AppService.queryPsNameByPsId
 // func (sg *SunGrow) QueryPsNameByPsId(psId valueTypes.PsId) (queryPsNameByPsId.ResultData, error) {
 // 	var ret queryPsNameByPsId.ResultData
-// 	for range Only.Once {
+// 	for range only.Once {
 // 	}
 // 	return ret, sg.Error
 // }
@@ -1477,7 +1468,7 @@ func (sg *SunGrow) GetPsTreeMenu(psId valueTypes.PsId) (getPsTreeMenu.ResultData
 // // GetTheoryAndActualPower - MttvScreenService.getTheoryAndActualPower
 // func (sg *SunGrow) GetTheoryAndActualPower(psId valueTypes.PsId) (getTheoryAndActualPower.ResultData, error) {
 // 	var ret getTheoryAndActualPower.ResultData
-// 	for range Only.Once {
+// 	for range only.Once {
 // 	}
 // 	return ret, sg.Error
 // }
@@ -1485,7 +1476,7 @@ func (sg *SunGrow) GetPsTreeMenu(psId valueTypes.PsId) (getPsTreeMenu.ResultData
 // // GetInverterInfo - WebAppService.getInverterInfo
 // func (sg *SunGrow) GetInverterInfo(psId valueTypes.PsId) (getInverterInfo.ResultData, error) {
 // 	var ret getInverterInfo.ResultData
-// 	for range Only.Once {
+// 	for range only.Once {
 // 	}
 // 	return ret, sg.Error
 // }
@@ -1493,7 +1484,7 @@ func (sg *SunGrow) GetPsTreeMenu(psId valueTypes.PsId) (getPsTreeMenu.ResultData
 // // GetMultiPowers - WebAppService.getMultiPowers
 // func (sg *SunGrow) GetMultiPowers(psId valueTypes.PsId) (getMultiPowers.ResultData, error) {
 // 	var ret getMultiPowers.ResultData
-// 	for range Only.Once {
+// 	for range only.Once {
 // 	}
 // 	return ret, sg.Error
 // }
@@ -1501,7 +1492,7 @@ func (sg *SunGrow) GetPsTreeMenu(psId valueTypes.PsId) (getPsTreeMenu.ResultData
 // // GetPsCBoxDetail - WebAppService.getPsCBoxDetail
 // func (sg *SunGrow) GetPsCBoxDetail(psId valueTypes.PsId) (getPsCBoxDetail.ResultData, error) {
 // 	var ret getPsCBoxDetail.ResultData
-// 	for range Only.Once {
+// 	for range only.Once {
 // 	}
 // 	return ret, sg.Error
 // }
@@ -1509,7 +1500,7 @@ func (sg *SunGrow) GetPsTreeMenu(psId valueTypes.PsId) (getPsTreeMenu.ResultData
 // // QueryBatteryBoardsList - WebAppService.queryBatteryBoardsList
 // func (sg *SunGrow) QueryBatteryBoardsList(psId valueTypes.PsId) (queryBatteryBoardsList.ResultData, error) {
 // 	var ret queryBatteryBoardsList.ResultData
-// 	for range Only.Once {
+// 	for range only.Once {
 // 	}
 // 	return ret, sg.Error
 // }
@@ -1517,7 +1508,7 @@ func (sg *SunGrow) GetPsTreeMenu(psId valueTypes.PsId) (getPsTreeMenu.ResultData
 // // ShowTjReport - WebAppService.showTjReport
 // func (sg *SunGrow) ShowTjReport(psId valueTypes.PsId) (showTjReport.ResultData, error) {
 // 	var ret showTjReport.ResultData
-// 	for range Only.Once {
+// 	for range only.Once {
 // 	}
 // 	return ret, sg.Error
 // }
@@ -1525,7 +1516,7 @@ func (sg *SunGrow) GetPsTreeMenu(psId valueTypes.PsId) (getPsTreeMenu.ResultData
 // // GetAuthKeyList - WebIscmAppService.getAuthKeyList
 // func (sg *SunGrow) GetAuthKeyList(psId valueTypes.PsId) (getAuthKeyList.ResultData, error) {
 // 	var ret getAuthKeyList.ResultData
-// 	for range Only.Once {
+// 	for range only.Once {
 // 	}
 // 	return ret, sg.Error
 // }

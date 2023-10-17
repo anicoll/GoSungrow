@@ -2,10 +2,10 @@ package cmdHassio
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
-	"github.com/MickMake/GoUnify/cmdLog"
-)
 
+	"github.com/anicoll/gosungrow/pkg/cmdlog"
+	"github.com/anicoll/gosungrow/pkg/only"
+)
 
 type Config struct {
 	Entry        string       `json:"~,omitempty" required:"false"`
@@ -31,10 +31,10 @@ func (m *Mqtt) NewDevice(config EntityConfig) (bool, Device) {
 	var ok bool
 	var ret Device
 
-	for range Only.Once {
+	for range only.Once {
 		var parent Device
 		if parent, ok = m.MqttDevices[config.ParentName]; !ok {
-			cmdLog.LogPrintDate("Unknown parentDevice: %s - will ignore.\n", config.ParentName)
+			cmdlog.LogPrintDate("Unknown parentDevice: %s - will ignore.\n", config.ParentName)
 			break
 		}
 
@@ -47,19 +47,19 @@ func (m *Mqtt) NewDevice(config EntityConfig) (bool, Device) {
 			modl = m.DeviceName
 		}
 
-		ret = Device {
+		ret = Device{
 			ConfigurationUrl: parent.ConfigurationUrl,
-			Connections:      [][]string {
-				{ m.EntityPrefix, JoinStringsForId(m.EntityPrefix, config.ParentName) },
-				{ JoinStringsForId(m.EntityPrefix, config.ParentName), JoinStringsForId(m.EntityPrefix, config.ParentId) },
+			Connections: [][]string{
+				{m.EntityPrefix, JoinStringsForId(m.EntityPrefix, config.ParentName)},
+				{JoinStringsForId(m.EntityPrefix, config.ParentName), JoinStringsForId(m.EntityPrefix, config.ParentId)},
 			},
-			Identifiers:      []string{ JoinStringsForId(m.EntityPrefix, config.ParentId) },
-			Manufacturer:     manu,
-			Model:            modl,
-			Name:             JoinStrings(m.EntityPrefix, config.ParentName, "-", parent.Name),
-			SuggestedArea:    parent.SuggestedArea,
-			SwVersion:        parent.SwVersion,
-			ViaDevice:        parent.ViaDevice,
+			Identifiers:   []string{JoinStringsForId(m.EntityPrefix, config.ParentId)},
+			Manufacturer:  manu,
+			Model:         modl,
+			Name:          JoinStrings(m.EntityPrefix, config.ParentName, "-", parent.Name),
+			SuggestedArea: parent.SuggestedArea,
+			SwVersion:     parent.SwVersion,
+			ViaDevice:     parent.ViaDevice,
 		}
 		ok = true
 	}

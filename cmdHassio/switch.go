@@ -2,16 +2,15 @@ package cmdHassio
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
 const LabelSwitch = "switch"
 
-
 func (m *Mqtt) SwitchPublishConfig(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsSwitch() {
 			break
 		}
@@ -23,7 +22,7 @@ func (m *Mqtt) SwitchPublishConfig(config EntityConfig) error {
 
 		id := JoinStringsForId(m.DeviceName, config.FullId)
 
-		payload := Switch {
+		payload := Switch{
 			Device:       newDevice,
 			Name:         String(JoinStrings(m.DeviceName, config.Name)),
 			StateTopic:   String(JoinStringsForTopic(m.Prefix, LabelSwitch, m.ClientId, id, "state")),
@@ -49,8 +48,7 @@ func (m *Mqtt) SwitchPublishConfig(config EntityConfig) error {
 }
 
 func (m *Mqtt) SwitchPublishValue(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsSwitch() {
 			break
 		}
@@ -73,7 +71,7 @@ func (m *Mqtt) SwitchPublishValue(config EntityConfig) error {
 			break
 		}
 
-		payload := MqttState {
+		payload := MqttState{
 			LastReset: config.LastReset, // m.GetLastReset(config.FullId),
 			Value:     value,
 		}
@@ -82,7 +80,6 @@ func (m *Mqtt) SwitchPublishValue(config EntityConfig) error {
 
 	return m.err
 }
-
 
 type Switch struct {
 	// A list of MQTT topics subscribed to receive availability (online/offline) updates. Must not be used together with availability_topic.
@@ -301,7 +298,7 @@ func (c *Switch) Json() string {
 func (config *EntityConfig) IsSwitch() bool {
 	var ok bool
 
-	for range Only.Once {
+	for range only.Once {
 		if config.Units == LabelSwitch {
 			ok = true
 			break

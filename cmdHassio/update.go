@@ -2,17 +2,15 @@ package cmdHassio
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
-)
 
+	"github.com/anicoll/gosungrow/pkg/only"
+)
 
 const LabelUpdate = "update"
 
-
 func (m *Mqtt) UpdatePublishConfig(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsUpdate() {
 			break
 		}
@@ -24,9 +22,9 @@ func (m *Mqtt) UpdatePublishConfig(config EntityConfig) error {
 
 		id := JoinStringsForId(m.DeviceName, config.FullId)
 
-		payload := Update {
-			Device:       newDevice,
-			Name:         String(JoinStrings(m.DeviceName, config.Name)),
+		payload := Update{
+			Device: newDevice,
+			Name:   String(JoinStrings(m.DeviceName, config.Name)),
 			// StateTopic:   JoinStringsForTopic(m.switchPrefix, id, "state"),
 			CommandTopic: String(JoinStringsForTopic(m.Prefix, LabelUpdate, m.ClientId, id, "cmd")),
 			ObjectId:     String(id),
@@ -39,7 +37,7 @@ func (m *Mqtt) UpdatePublishConfig(config EntityConfig) error {
 			// StateOn:       "true",
 			// StateOff:      "false",
 			// ValueTemplate: config.ValueTemplate,
-			Icon:          Icon(config.Icon),
+			Icon: Icon(config.Icon),
 		}
 
 		tag := JoinStringsForTopic(m.Prefix, LabelUpdate, m.ClientId, id, "config")
@@ -50,8 +48,7 @@ func (m *Mqtt) UpdatePublishConfig(config EntityConfig) error {
 }
 
 func (m *Mqtt) UpdatePublishValue(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsUpdate() {
 			break
 		}
@@ -74,7 +71,7 @@ func (m *Mqtt) UpdatePublishValue(config EntityConfig) error {
 			break
 		}
 
-		payload := MqttState {
+		payload := MqttState{
 			LastReset: config.LastReset, // m.GetLastReset(config.FullId),
 			Value:     value,
 		}
@@ -167,7 +164,6 @@ type Update struct {
 	ValueTemplate Template `json:"value_template,omitempty"`
 }
 
-
 func (c *Update) Json() string {
 	j, _ := json.Marshal(*c)
 	return string(j)
@@ -176,7 +172,7 @@ func (c *Update) Json() string {
 func (config *EntityConfig) IsUpdate() bool {
 	var ok bool
 
-	for range Only.Once {
+	for range only.Once {
 		if config.Units == LabelUpdate {
 			ok = true
 			break

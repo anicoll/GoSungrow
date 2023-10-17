@@ -1,27 +1,27 @@
 package iSolarCloud
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getDeviceList"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getDeviceModelInfoList"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/getPowerDevicePointNames"
-	"github.com/MickMake/GoSungrow/iSolarCloud/AppService/queryDeviceList"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/output"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
 	"errors"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
-	datatable "go.pennock.tech/tabular/auto"
 	"os"
 	"sort"
 	"time"
-)
 
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getDeviceList"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getDeviceModelInfoList"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/getPowerDevicePointNames"
+	"github.com/anicoll/gosungrow/iSolarCloud/AppService/queryDeviceList"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/output"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+	"github.com/anicoll/gosungrow/pkg/only"
+	datatable "go.pennock.tech/tabular/auto"
+)
 
 // DeviceTypeList - Return all device_types.
 func (sg *SunGrow) DeviceTypeList(psIds ...string) (string, error) {
 	var ret string
 
-	for range Only.Once {
+	for range only.Once {
 		pids := sg.SetPsIds(psIds...)
 		if sg.Error != nil {
 			break
@@ -49,7 +49,7 @@ func (sg *SunGrow) DeviceTypeList(psIds ...string) (string, error) {
 		table.AddHeaders("Device Type", "Name")
 
 		ep := sg.GetByStruct(queryDeviceList.EndPointName,
-			queryDeviceList.RequestData{ PsId: pids[0] },
+			queryDeviceList.RequestData{PsId: pids[0]},
 			DefaultCacheTimeout,
 		)
 		if sg.IsError() {
@@ -84,7 +84,7 @@ func (sg *SunGrow) DeviceTypeList(psIds ...string) (string, error) {
 func (sg *SunGrow) DeviceTypePoints(deviceTypes ...string) (string, error) {
 	var ret string
 
-	for range Only.Once {
+	for range only.Once {
 		pids := sg.SetPsIds()
 		if sg.Error != nil {
 			break
@@ -94,7 +94,7 @@ func (sg *SunGrow) DeviceTypePoints(deviceTypes ...string) (string, error) {
 		}
 
 		ep1 := sg.GetByStruct(queryDeviceList.EndPointName,
-			queryDeviceList.RequestData{ PsId: pids[0] },
+			queryDeviceList.RequestData{PsId: pids[0]},
 			DefaultCacheTimeout,
 		)
 		if sg.IsError() {
@@ -102,13 +102,12 @@ func (sg *SunGrow) DeviceTypePoints(deviceTypes ...string) (string, error) {
 		}
 		data1 := queryDeviceList.Assert(ep1)
 
-
 		table := output.NewTable("Point Id", "Name", "Cal Type", "Device Type", "Device Name")
 
 		// var points []getPowerDevicePointNames.Point
 		for deviceType, deviceName := range data1.Response.ResultData.DevTypeDefinition {
 			ep := sg.GetByStruct(getPowerDevicePointNames.EndPointName,
-				getPowerDevicePointNames.RequestData{ DeviceType: valueTypes.SetIntegerString(deviceType) },
+				getPowerDevicePointNames.RequestData{DeviceType: valueTypes.SetIntegerString(deviceType)},
 				DefaultCacheTimeout,
 			)
 			if sg.IsError() {
@@ -157,7 +156,7 @@ func (sg *SunGrow) DeviceTypePoints(deviceTypes ...string) (string, error) {
 
 // DeviceTypeData - Return all point data associated a device_type.
 func (sg *SunGrow) DeviceTypeData(deviceType string, startDate string, endDate string, interval string) error {
-	for range Only.Once {
+	for range only.Once {
 		if deviceType == "" {
 			sg.Error = errors.New("no template defined")
 			break
@@ -191,7 +190,7 @@ func (sg *SunGrow) DeviceTypeData(deviceType string, startDate string, endDate s
 
 // DeviceTypeSave - Return all point data associated a device_type and save as files.
 func (sg *SunGrow) DeviceTypeSave(deviceType string, startDate string, endDate string, interval string) error {
-	for range Only.Once {
+	for range only.Once {
 		if deviceType == "" {
 			sg.Error = errors.New("no template defined")
 			break
@@ -223,12 +222,11 @@ func (sg *SunGrow) DeviceTypeSave(deviceType string, startDate string, endDate s
 	return sg.Error
 }
 
-
 // GetDeviceList - AppService.getDeviceList
 func (sg *SunGrow) GetDeviceList(psIds ...string) ([]getDeviceList.Device, error) {
 	var ret []getDeviceList.Device
 
-	for range Only.Once {
+	for range only.Once {
 		pids := sg.SetPsIds(psIds...)
 		if sg.Error != nil {
 			break
@@ -236,10 +234,10 @@ func (sg *SunGrow) GetDeviceList(psIds ...string) ([]getDeviceList.Device, error
 
 		for _, psId := range pids {
 			ep := sg.GetByStruct(getDeviceList.EndPointName,
-				getDeviceList.RequestData {
+				getDeviceList.RequestData{
 					PsId: psId,
 				},
-				time.Hour * 24,
+				time.Hour*24,
 			)
 			if sg.IsError() {
 				break
@@ -256,7 +254,7 @@ func (sg *SunGrow) GetDeviceList(psIds ...string) ([]getDeviceList.Device, error
 // QueryDeviceList - AppService.queryDeviceList
 func (sg *SunGrow) QueryDeviceList(psIds ...string) ([]queryDeviceList.Device, error) {
 	var ret []queryDeviceList.Device
-	for range Only.Once {
+	for range only.Once {
 		pids := sg.SetPsIds(psIds...)
 		if sg.Error != nil {
 			break
@@ -264,7 +262,7 @@ func (sg *SunGrow) QueryDeviceList(psIds ...string) ([]queryDeviceList.Device, e
 
 		for _, psId := range pids {
 			ep := sg.GetByStruct(queryDeviceList.EndPointName,
-				queryDeviceList.RequestData {
+				queryDeviceList.RequestData{
 					PsId: psId,
 				},
 				time.Hour*24,
@@ -281,10 +279,9 @@ func (sg *SunGrow) QueryDeviceList(psIds ...string) ([]queryDeviceList.Device, e
 	return ret, sg.Error
 }
 
-
 func (sg *SunGrow) GetPowerDevicePointNames(device valueTypes.Integer) ([]getPowerDevicePointNames.Point, error) {
 	var ret []getPowerDevicePointNames.Point
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getPowerDevicePointNames.EndPointName,
 			getPowerDevicePointNames.RequestData{DeviceType: device},
 			DefaultCacheTimeout,
@@ -300,9 +297,8 @@ func (sg *SunGrow) GetPowerDevicePointNames(device valueTypes.Integer) ([]getPow
 	return ret, sg.Error
 }
 
-
 func (sg *SunGrow) DeviceModelInfoList() error {
-	for range Only.Once {
+	for range only.Once {
 		ep := sg.GetByStruct(getDeviceModelInfoList.EndPointName,
 			getDeviceModelInfoList.RequestData{},
 			DefaultCacheTimeout,
@@ -332,11 +328,10 @@ func (sg *SunGrow) DeviceModelInfoList() error {
 	return sg.Error
 }
 
-
 // func (sg *SunGrow) GetDevices(psId valueTypes.PsId) (getDeviceList.Devices, error) {
 // 	var ret getDeviceList.Devices
 //
-// 	for range Only.Once {
+// 	for range only.Once {
 // 		// ret = append(ret, getDeviceList.Device{
 // 		// 	Vendor:        valueTypes.SetStringValue(""),
 // 		// 	PsId:          psId.PsId,
@@ -380,7 +375,7 @@ func (sg *SunGrow) DeviceModelInfoList() error {
 // }
 
 // func (sg *SunGrow) GetDeviceList(psIds ...string) error {
-// 	for range Only.Once {
+// 	for range only.Once {
 // 		data := sg.NewSunGrowData()
 // 		data.SetPsIds(psIds...)
 // 		data.SetEndpoints("getDeviceList")

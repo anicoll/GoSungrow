@@ -1,22 +1,23 @@
 package output
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/gojson"
-	"github.com/MickMake/GoSungrow/tablib"
 	"errors"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
 	"os"
 	"path"
 	"reflect"
 	"sort"
 	"strings"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/gojson"
+	"github.com/anicoll/gosungrow/pkg/only"
+	"github.com/anicoll/gosungrow/tablib"
 )
+
 // "go.pennock.tech/tabular/auto"
 // "github.com/olekukonko/tablewriter"
 // "github.com/agrison/go-tablib"
 // "github.com/jbub/tabular"
-
 
 type Tables map[string]Table
 
@@ -26,7 +27,7 @@ func NewTables() Tables {
 
 func (t *Tables) Sort() []string {
 	var sorted []string
-	for range Only.Once {
+	for range only.Once {
 		for p := range *t {
 			sorted = append(sorted, p)
 		}
@@ -34,7 +35,6 @@ func (t *Tables) Sort() []string {
 	}
 	return sorted
 }
-
 
 type Table struct {
 	name        string
@@ -49,7 +49,7 @@ type Table struct {
 	graphFilter string
 	Error       error
 
-	tablib      *tablib.Dataset
+	tablib *tablib.Dataset
 	// tabular     tabular.RenderTable
 	// tablewriter *tablewriter.Table
 	// buf         *bytes.Buffer
@@ -59,18 +59,18 @@ type Table struct {
 
 func NewTable(headers ...string) Table {
 	// buf := new(bytes.Buffer)
-	t := Table {
-		directory:   "",
-		filePrefix:  "",
-		title:       "",
-		tablib:      tablib.NewDataset(headers),
+	t := Table{
+		directory:  "",
+		filePrefix: "",
+		title:      "",
+		tablib:     tablib.NewDataset(headers),
 		// tabular:     tabular.New("utf8-heavy"),
 		// tablewriter: tablewriter.NewWriter(buf),
 		// buf:         buf,
 		// headers:     []string{},
 		// method:      MethodTablib,
 
-		Error:       nil,
+		Error: nil,
 	}
 
 	t.tablib.SetAlign(tablib.AlignLeft)
@@ -120,7 +120,7 @@ func NewTable(headers ...string) Table {
 
 func (t Table) String() string {
 	var ret string
-	for range Only.Once {
+	for range only.Once {
 		// switch t.method {
 		// 	case 2:
 		// 		// Example: GoSungrow api ls endpoints / GoSungrow api ls areas
@@ -152,7 +152,7 @@ func (t Table) String() string {
 
 func (t *Table) IsValid() bool {
 	var yes bool
-	for range Only.Once {
+	for range only.Once {
 		if t.tablib == nil {
 			break
 		}
@@ -176,7 +176,7 @@ func (t *Table) IsNotValid() bool {
 
 func (t *Table) GetHeaders() []string {
 	var ret []string
-	for range Only.Once {
+	for range only.Once {
 		// switch t.method {
 		// case 2:
 		// 	if t.buf == nil {
@@ -208,7 +208,7 @@ func (t *Table) GetHeaders() []string {
 
 func (t *Table) GetSortedHeaders() []string {
 	var sorted []string
-	for range Only.Once {
+	for range only.Once {
 		sorted = t.GetHeaders()
 		sort.Strings(sorted)
 	}
@@ -216,7 +216,7 @@ func (t *Table) GetSortedHeaders() []string {
 }
 
 func (t *Table) Sort(sort string) {
-	for range Only.Once {
+	for range only.Once {
 		if t.IsNotValid() {
 			break
 		}
@@ -274,7 +274,7 @@ func (t *Table) RowLength() int {
 func (t *Table) GetCell(row int, colName string) (string, interface{}, error) {
 	var ret interface{}
 	var retType string
-	for range Only.Once {
+	for range only.Once {
 		// switch t.method {
 		// 	case 2:
 		// 		// @TODO -
@@ -344,7 +344,7 @@ func (t *Table) AddRow(row ...interface{}) error {
 }
 
 func (t *Table) writeFile(data string, perm os.FileMode) error {
-	for range Only.Once {
+	for range only.Once {
 		Mkdir(t.directory)
 		// if !DirExists(t.directory) {
 		// 	Mkdir(t.directory)
@@ -399,7 +399,7 @@ func (t *Table) SetGraphFilter(filter string) {
 }
 
 func (t *Table) SetFilePrefix(prefix string, args ...interface{}) {
-	for range Only.Once {
+	for range only.Once {
 		if prefix == "" {
 			break
 		}
@@ -416,7 +416,7 @@ func (t *Table) SetFilePrefix(prefix string, args ...interface{}) {
 }
 
 func (t *Table) SetDirectory(prefix string, args ...interface{}) {
-	for range Only.Once {
+	for range only.Once {
 		if prefix == "" {
 			break
 		}
@@ -433,7 +433,7 @@ func (t *Table) SetDirectory(prefix string, args ...interface{}) {
 }
 
 func (t *Table) AppendFilePrefix(prefix string, args ...interface{}) {
-	for range Only.Once {
+	for range only.Once {
 		if prefix == "" {
 			break
 		}
@@ -445,14 +445,14 @@ func (t *Table) AppendFilePrefix(prefix string, args ...interface{}) {
 }
 
 func (t *Table) PrependFilePrefix(prefix string, args ...interface{}) {
-	for range Only.Once {
+	for range only.Once {
 		if prefix == "" {
 			break
 		}
 		if len(args) > 0 {
 			prefix = fmt.Sprintf(prefix, args...)
 		}
-		t.filePrefix =  prefix + "-" + t.filePrefix
+		t.filePrefix = prefix + "-" + t.filePrefix
 	}
 }
 
@@ -468,48 +468,47 @@ func (t *Table) GetName() string {
 	return t.name
 }
 
-
 func (t *Table) Output() error {
-	for range Only.Once {
+	for range only.Once {
 		if t == nil {
 			break
 		}
 
 		switch {
-			case t.OutputType.IsNone():
+		case t.OutputType.IsNone():
 
-			case t.OutputType.IsTable():
-				t.Error = t.WriteTable()
+		case t.OutputType.IsTable():
+			t.Error = t.WriteTable()
 
-			case t.OutputType.IsList():
-				t.Error = t.WriteList()
+		case t.OutputType.IsList():
+			t.Error = t.WriteList()
 
-			case t.OutputType.IsCsv():
-				t.Error = t.WriteCsv()
+		case t.OutputType.IsCsv():
+			t.Error = t.WriteCsv()
 
-			case t.OutputType.IsXML():
-				t.Error = t.WriteXml()
+		case t.OutputType.IsXML():
+			t.Error = t.WriteXml()
 
-			case t.OutputType.IsXLSX():
-				t.Error = t.WriteXLSX()
+		case t.OutputType.IsXLSX():
+			t.Error = t.WriteXLSX()
 
-			case t.OutputType.IsRaw():
-				t.Error = t.WriteRaw()
+		case t.OutputType.IsRaw():
+			t.Error = t.WriteRaw()
 
-			case t.OutputType.IsJson():
-				t.Error = t.WriteJson()
+		case t.OutputType.IsJson():
+			t.Error = t.WriteJson()
 
-			case t.OutputType.IsGraph():
-				t.Error = t.CreateGraph()
+		case t.OutputType.IsGraph():
+			t.Error = t.CreateGraph()
 
-			case t.OutputType.IsMarkDown():
-				t.Error = t.WriteMarkDown()
+		case t.OutputType.IsMarkDown():
+			t.Error = t.WriteMarkDown()
 
-			case t.OutputType.IsStruct():
-				t.Error = t.WriteStruct()
+		case t.OutputType.IsStruct():
+			t.Error = t.WriteStruct()
 
-			default:
-				t.Error = t.WriteTable()
+		default:
+			t.Error = t.WriteTable()
 		}
 	}
 
@@ -521,7 +520,7 @@ func (t *Table) AsTable() string {
 }
 
 func (t *Table) WriteTable() error {
-	for range Only.Once {
+	for range only.Once {
 		if t.IsNotValid() {
 			msg := fmt.Sprintf("# %s - has no data.", t.name)
 			if t.saveAsFile {
@@ -545,7 +544,7 @@ func (t *Table) WriteTable() error {
 }
 
 func (t *Table) WriteList() error {
-	for range Only.Once {
+	for range only.Once {
 		if t.IsNotValid() {
 			msg := fmt.Sprintf("# %s - has no data.", t.name)
 			if t.saveAsFile {
@@ -568,10 +567,9 @@ func (t *Table) WriteList() error {
 	return t.Error
 }
 
-
 func (t *Table) AsCsv() string {
 	var ret string
-	for range Only.Once {
+	for range only.Once {
 		if t.IsNotValid() {
 			break
 		}
@@ -587,7 +585,7 @@ func (t *Table) AsCsv() string {
 }
 
 func (t *Table) WriteCsv() error {
-	for range Only.Once {
+	for range only.Once {
 		if t.IsNotValid() {
 			msg := fmt.Sprintf("# %s - has no data.", t.name)
 			if t.saveAsFile {
@@ -610,10 +608,9 @@ func (t *Table) WriteCsv() error {
 	return t.Error
 }
 
-
 func (t *Table) AsXml() string {
 	var ret string
-	for range Only.Once {
+	for range only.Once {
 		if t.IsNotValid() {
 			break
 		}
@@ -629,7 +626,7 @@ func (t *Table) AsXml() string {
 }
 
 func (t *Table) WriteXml() error {
-	for range Only.Once {
+	for range only.Once {
 		if t.IsNotValid() {
 			msg := fmt.Sprintf("# %s - has no data.", t.name)
 			if t.saveAsFile {
@@ -652,10 +649,9 @@ func (t *Table) WriteXml() error {
 	return t.Error
 }
 
-
 func (t *Table) AsXLSX() string {
 	var ret string
-	for range Only.Once {
+	for range only.Once {
 		if t.IsNotValid() {
 			break
 		}
@@ -671,7 +667,7 @@ func (t *Table) AsXLSX() string {
 }
 
 func (t *Table) WriteXLSX() error {
-	for range Only.Once {
+	for range only.Once {
 		if t.IsNotValid() {
 			msg := fmt.Sprintf("# %s - has no data.", t.name)
 			if t.saveAsFile {
@@ -694,13 +690,12 @@ func (t *Table) WriteXLSX() error {
 	return t.Error
 }
 
-
 func (t *Table) AsJson() string {
 	return string(t.raw)
 }
 
 func (t *Table) WriteJson() error {
-	for range Only.Once {
+	for range only.Once {
 		// Don't check for valid table data.
 
 		if t.saveAsFile {
@@ -715,7 +710,6 @@ func (t *Table) WriteJson() error {
 	return t.Error
 }
 
-
 func (t *Table) AsRaw() string {
 	return string(t.json)
 }
@@ -725,7 +719,7 @@ func (t *Table) AsRawBytes() []byte {
 }
 
 func (t *Table) WriteRaw() error {
-	for range Only.Once {
+	for range only.Once {
 		// Don't check for valid table data.
 
 		if t.saveAsFile {
@@ -740,13 +734,12 @@ func (t *Table) WriteRaw() error {
 	return t.Error
 }
 
-
 func (t *Table) AsStruct() string {
 	return string(t.json)
 }
 
 func (t *Table) WriteStruct() error {
-	for range Only.Once {
+	for range only.Once {
 		// Don't check for valid table data.
 
 		var data string
@@ -776,10 +769,9 @@ func (t *Table) WriteStruct() error {
 	return t.Error
 }
 
-
 func (t *Table) AsMarkDown() string {
 	var ret string
-	for range Only.Once {
+	for range only.Once {
 		if t.IsNotValid() {
 			break
 		}
@@ -795,7 +787,7 @@ func (t *Table) AsMarkDown() string {
 }
 
 func (t *Table) WriteMarkDown() error {
-	for range Only.Once {
+	for range only.Once {
 		if t.IsNotValid() {
 			msg := fmt.Sprintf("# %s - has no data.", t.name)
 			if t.saveAsFile {
@@ -807,7 +799,7 @@ func (t *Table) WriteMarkDown() error {
 		}
 
 		if t.saveAsFile {
-			_, _ = fmt.Fprintf(os.Stderr,"# %s\n", t.title)
+			_, _ = fmt.Fprintf(os.Stderr, "# %s\n", t.title)
 			t.filePrefix += "." + StringTypeMarkDown
 			t.Error = t.writeFile(t.AsMarkDown(), DefaultFileMode)
 			break

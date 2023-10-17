@@ -3,29 +3,28 @@ package api
 import (
 	"errors"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
-)
 
+	"github.com/anicoll/gosungrow/pkg/only"
+)
 
 type Request struct {
 	RequestCommon
 }
 
 type RequestCommon struct {
-	Appkey     string `json:"appkey" required:"true"`
-	Lang       string `json:"lang"`
-	SysCode    string `json:"sys_code" required:"true"`
-	Token      string `json:"token"`
-	UserId     string `json:"user_id"`
-	ValidFlag  string `json:"valid_flag"`
+	Appkey    string `json:"appkey" required:"true"`
+	Lang      string `json:"lang"`
+	SysCode   string `json:"sys_code" required:"true"`
+	Token     string `json:"token"`
+	UserId    string `json:"user_id"`
+	ValidFlag string `json:"valid_flag"`
 	// DeviceType string `json:"device_type"`
 }
 
-
 func (req RequestCommon) IsValid() error {
 	var err error
-	for range Only.Once {
+	for range only.Once {
 		err = CheckString("Appkey", req.Appkey)
 		if err != nil {
 			break
@@ -68,7 +67,7 @@ func (req RequestCommon) String() string {
 // CheckString RequestCommon checks
 func CheckString(name string, rc string) error {
 	var err error
-	for range Only.Once {
+	for range only.Once {
 		if rc == "" {
 			err = errors.New(name + ": empty string")
 			break

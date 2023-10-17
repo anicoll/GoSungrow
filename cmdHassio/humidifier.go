@@ -2,16 +2,15 @@ package cmdHassio
 
 import (
 	"encoding/json"
-	"github.com/MickMake/GoUnify/Only"
 	"strings"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
 const LabelHumidifier = "humidifier"
 
-
 func (m *Mqtt) HumidifierPublishConfig(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsHumidifier() {
 			break
 		}
@@ -23,9 +22,9 @@ func (m *Mqtt) HumidifierPublishConfig(config EntityConfig) error {
 
 		id := JoinStringsForId(m.DeviceName, config.FullId)
 
-		payload := Humidifier {
-			Device:       newDevice,
-			Name:         String(JoinStrings(m.DeviceName, config.Name)),
+		payload := Humidifier{
+			Device: newDevice,
+			Name:   String(JoinStrings(m.DeviceName, config.Name)),
 			// StateTopic:   JoinStringsForTopic(m.switchPrefix, id, "state"),
 			CommandTopic: String(JoinStringsForTopic(m.Prefix, LabelHumidifier, m.ClientId, id, "cmd")),
 			ObjectId:     String(id),
@@ -38,7 +37,7 @@ func (m *Mqtt) HumidifierPublishConfig(config EntityConfig) error {
 			// StateOn:       "true",
 			// StateOff:      "false",
 			// ValueTemplate: config.ValueTemplate,
-			Icon:          Icon(config.Icon),
+			Icon: Icon(config.Icon),
 		}
 
 		tag := JoinStringsForTopic(m.Prefix, LabelHumidifier, m.ClientId, id, "config")
@@ -49,8 +48,7 @@ func (m *Mqtt) HumidifierPublishConfig(config EntityConfig) error {
 }
 
 func (m *Mqtt) HumidifierPublishValue(config EntityConfig) error {
-
-	for range Only.Once {
+	for range only.Once {
 		if !config.IsHumidifier() {
 			break
 		}
@@ -73,7 +71,7 @@ func (m *Mqtt) HumidifierPublishValue(config EntityConfig) error {
 			break
 		}
 
-		payload := MqttState {
+		payload := MqttState{
 			LastReset: config.LastReset, // m.GetLastReset(config.FullId),
 			Value:     value,
 		}
@@ -203,7 +201,6 @@ type Humidifier struct {
 	UniqueId String `json:"unique_id,omitempty"`
 }
 
-
 func (c *Humidifier) Json() string {
 	j, _ := json.Marshal(*c)
 	return string(j)
@@ -212,7 +209,7 @@ func (c *Humidifier) Json() string {
 func (config *EntityConfig) IsHumidifier() bool {
 	var ok bool
 
-	for range Only.Once {
+	for range only.Once {
 		if config.Units == LabelHumidifier {
 			ok = true
 			break

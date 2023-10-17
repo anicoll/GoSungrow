@@ -1,17 +1,19 @@
 package getAllDeviceByPsId
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
-
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/api"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-const Url = "/v1/devService/getAllDeviceByPsId"
-const Disabled = false
-const EndPointName = "AppService.getAllDeviceByPsId"
+const (
+	Url          = "/v1/devService/getAllDeviceByPsId"
+	Disabled     = false
+	EndPointName = "AppService.getAllDeviceByPsId"
+)
 
 type RequestData struct {
 	PsId valueTypes.PsId `json:"ps_id" required:"true"`
@@ -26,7 +28,6 @@ func (rd RequestData) Help() string {
 	return ret
 }
 
-
 type ResultData struct {
 	// Dummy valueTypes.String `json:"dummy"`
 }
@@ -39,7 +40,7 @@ func (e *ResultData) IsValid() error {
 func (e *EndPoint) GetData() api.DataMap {
 	entries := api.NewDataMap()
 
-	for range Only.Once {
+	for range only.Once {
 		// pkg := reflection.GetName("", *e)
 		// dt := valueTypes.NewDateTime(valueTypes.Now)
 		// name := pkg + "." + e.Request.PsId.String()

@@ -1,19 +1,21 @@
 package getCustomerList
 
 import (
-	"github.com/MickMake/GoSungrow/iSolarCloud/api"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct"
-	"github.com/MickMake/GoSungrow/iSolarCloud/api/GoStruct/valueTypes"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
+
+	"github.com/anicoll/gosungrow/iSolarCloud/api"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct"
+	"github.com/anicoll/gosungrow/iSolarCloud/api/GoStruct/valueTypes"
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-const Url = "/v1/devService/getCustomerList"
-const Disabled = false
-const EndPointName = "AppService.getCustomerList"
+const (
+	Url          = "/v1/devService/getCustomerList"
+	Disabled     = false
+	EndPointName = "AppService.getCustomerList"
+)
 
-type RequestData struct {
-}
+type RequestData struct{}
 
 func (rd RequestData) IsValid() error {
 	return GoStruct.VerifyOptionsRequired(rd)
@@ -24,13 +26,12 @@ func (rd RequestData) Help() string {
 	return ret
 }
 
-
 type ResultData []struct {
-	GoStructParent GoStruct.GoStructParent  `json:"-" DataTable:"true" DataTableSortOn:"CustomerCode"`
+	GoStructParent GoStruct.GoStructParent `json:"-" DataTable:"true" DataTableSortOn:"CustomerCode"`
 
-	CustomerCode valueTypes.String `json:"customer_code"`
-	CustomerName valueTypes.String `json:"customer_name"`
-	FactoryId valueTypes.Integer `json:"factory_id"`
+	CustomerCode valueTypes.String  `json:"customer_code"`
+	CustomerName valueTypes.String  `json:"customer_name"`
+	FactoryId    valueTypes.Integer `json:"factory_id"`
 }
 
 func (e *ResultData) IsValid() error {
@@ -38,11 +39,10 @@ func (e *ResultData) IsValid() error {
 	return err
 }
 
-
 func (e *EndPoint) GetData() api.DataMap {
 	entries := api.NewDataMap()
 
-	for range Only.Once {
+	for range only.Once {
 		entries.StructToDataMap(*e, "", GoStruct.EndPointPath{})
 	}
 

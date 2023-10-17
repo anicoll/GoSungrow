@@ -4,20 +4,19 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/MickMake/GoUnify/Only"
 	"net/url"
+
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
-
 type EndPointUrl struct {
-	EndPoint *url.URL	`json:"endpoint"`
-	Error error	`json:"error"`
+	EndPoint *url.URL `json:"endpoint"`
+	Error    error    `json:"error"`
 }
-
 
 func (u EndPointUrl) AppendPath(endpoint string) EndPointUrl {
 	var ret EndPointUrl
-	for range Only.Once {
+	for range only.Once {
 		endpoint = fmt.Sprintf("%s%s", u.String(), endpoint)
 		// ret.URL, ret.Error = url.Parse(endpoint)
 		// u, e := url.Parse(endpoint)
@@ -30,7 +29,7 @@ func (u EndPointUrl) AppendPath(endpoint string) EndPointUrl {
 
 func (u *EndPointUrl) IsValid() error {
 	var err error
-	for range Only.Once {
+	for range only.Once {
 		if u == nil {
 			err = errors.New("empty url")
 			break
@@ -57,24 +56,24 @@ func (u EndPointUrl) String() string {
 
 func (u *EndPointUrl) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
-		Url    string `json:"url"`
+		Url string `json:"url"`
 	}{
-		Url:    u.String(),
+		Url: u.String(),
 	})
 }
 
 func (u *EndPointUrl) UnmarshalJSON(data []byte) error {
 	// type Alias EndPointUrl
 	var err error
-	for range Only.Once {
+	for range only.Once {
 		aux := &struct {
-			EndPoint string	`json:"url"`
+			EndPoint string `json:"url"`
 			// Scheme string `json:"schema"`
 			// Host   string `json:"host"`
 			// Path   string `json:"path"`
 			// Url    string `json:"url"`
 		}{
-			EndPoint:    u.String(),
+			EndPoint: u.String(),
 		}
 		err = json.Unmarshal(data, &aux)
 		if err != nil {
@@ -83,7 +82,6 @@ func (u *EndPointUrl) UnmarshalJSON(data []byte) error {
 	}
 	return err
 }
-
 
 func SetUrl(endpoint string) EndPointUrl {
 	var ret EndPointUrl
