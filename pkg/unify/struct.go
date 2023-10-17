@@ -15,14 +15,11 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/MickMake/GoUnify/cmdCron"
-	"github.com/MickMake/GoUnify/cmdDaemon"
-	"github.com/MickMake/GoUnify/cmdRun"
-	"github.com/MickMake/GoUnify/cmdService"
-	"github.com/MickMake/GoUnify/cmdShell"
-	"github.com/MickMake/GoUnify/cmdVersion"
 	"github.com/anicoll/gosungrow/pkg/cmdconfig"
 	"github.com/anicoll/gosungrow/pkg/cmdhelp"
+	"github.com/anicoll/gosungrow/pkg/cmdrun"
+	"github.com/anicoll/gosungrow/pkg/cmdservice"
+	"github.com/anicoll/gosungrow/pkg/cmdversion"
 	"github.com/anicoll/gosungrow/pkg/only"
 	cc "github.com/ivanpirog/coloredcobra"
 	"github.com/spf13/cobra"
@@ -103,18 +100,15 @@ func (u *Unify) InitCmds(mergeRun bool) error {
 
 		u.Commands.cmdconfig = cmdconfig.New(u.Options.BinaryName, u.Options.BinaryVersion, u.Options.EnvPrefix)
 
-		u.Commands.CmdVersion = cmdVersion.New(u.Options.BinaryName, u.Options.BinaryVersion, false)
+		u.Commands.CmdVersion = cmdversion.New(u.Options.BinaryName, u.Options.BinaryVersion, false)
 		u.Commands.CmdVersion.SetBinaryRepo(u.Options.BinaryRepo)
 		u.Commands.CmdVersion.SetSourceRepo(u.Options.SourceRepo)
 
 		u.mergeRun = mergeRun
 		if u.mergeRun {
-			u.Commands.CmdRun = cmdRun.New(u.Options.BinaryName, u.Options.BinaryVersion, u.Options.Description, u.GetConfigDir())
+			u.Commands.CmdRun = cmdrun.New(u.Options.BinaryName, u.Options.BinaryVersion, u.Options.Description, u.GetConfigDir())
 		} else {
-			u.Commands.CmdDaemon = cmdDaemon.New(u.Options.BinaryName)
-			u.Commands.CmdCron = cmdCron.New(u.Options.BinaryName)
-			u.Commands.CmdShell = cmdShell.New(u.Options.BinaryName, u.Options.BinaryVersion, u.GetConfigDir())
-			u.Commands.CmdService = cmdService.New(u.Options.BinaryName, u.Options.Description, u.GetConfigDir())
+			u.Commands.CmdService = cmdservice.New(u.Options.BinaryName, u.Options.Description, u.GetConfigDir())
 			// u.Commands.CmdSystray = cmdSystray.New(u.Commands.cmdconfig, u.Commands.CmdVersion)
 		}
 
@@ -157,9 +151,6 @@ func (u *Unify) Execute() error {
 		if u.mergeRun {
 			u.Commands.CmdRun.AttachCommands(u.Commands.CmdRoot)
 		} else {
-			u.Commands.CmdDaemon.AttachCommands(u.Commands.CmdRoot)
-			u.Commands.CmdCron.AttachCommands(u.Commands.CmdRoot)
-			u.Commands.CmdShell.AttachCommands(u.Commands.CmdRoot)
 			u.Commands.CmdService.AttachCommands(u.Commands.CmdRoot)
 			// u.Commands.CmdSystray.AttachCommands(u.Commands.CmdRoot)
 		}
@@ -253,14 +244,11 @@ func (u *Unify) GetCacheDir() string {
 
 type Commands struct {
 	CmdRoot *cobra.Command
-	CmdRun  *cmdRun.Run
+	CmdRun  *cmdrun.Run
 
-	CmdDaemon  *cmdDaemon.Daemon
-	CmdCron    *cmdCron.Cron
-	CmdService *cmdService.Service
-	CmdShell   *cmdShell.Shell
+	CmdService *cmdservice.Service
 
-	CmdVersion *cmdVersion.Version
+	CmdVersion *cmdversion.Version
 	cmdconfig  *cmdconfig.Config
 	// CmdSystray *cmdSystray.Config
 	cmdhelp *cmdhelp.Help

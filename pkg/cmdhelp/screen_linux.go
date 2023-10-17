@@ -7,7 +7,7 @@ import (
 	"syscall"
 	"unsafe"
 
-	"github.com/MickMake/GoUnify/Only"
+	"github.com/anicoll/gosungrow/pkg/only"
 )
 
 type winsize struct {
@@ -32,7 +32,7 @@ func getWidth() int {
 
 func isTerminal() bool {
 	var yes bool
-	for range Only.Once {
+	for range only.Once {
 		o, _ := os.Stdout.Stat()
 		if (o.Mode() & os.ModeCharDevice) == os.ModeCharDevice {
 			// Is terminal
